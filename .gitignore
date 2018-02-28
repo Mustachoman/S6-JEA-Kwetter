@@ -24,3 +24,15 @@ hs_err_pid*
 
 # Desktop.ini files die windows zelf aanmaakt
 desktop.ini
+
+#Netbeans files die niet nodig zijn
+/nbproject/
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+#Persistence XML zodat we los op eigen databases kunnen werken
+persistence.xml
