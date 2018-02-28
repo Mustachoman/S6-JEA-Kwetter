@@ -33,6 +33,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+target/
 
 #Persistence XML zodat we los op eigen databases kunnen werken
 persistence.xml
