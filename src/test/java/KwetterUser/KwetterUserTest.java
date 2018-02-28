@@ -6,6 +6,8 @@
 package KwetterUser;
 
 import domain.KwetterUser;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -19,36 +21,43 @@ import static org.junit.Assert.*;
  * @author Marijn
  */
 public class KwetterUserTest {
-    
-    private KwetterUser testMarijn;
-    private KwetterUser testRoy;
-    
+
+    private final KwetterUser testMarijn;
+    private final KwetterUser testRoy;
+
     public KwetterUserTest() {
         this.testMarijn = new KwetterUser("Marijn", "Spamturtle");
         this.testRoy = new KwetterUser("Roy", "DaCowGoesMoo");
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
     @Test
-    public void testFollow() {
-         //Test if user is following other users
+    public void testFollowUser() {
+        //Test if user is following other users (shouldn't at first)
          Assert.assertTrue(testMarijn.getFollowing().isEmpty());
-         testMarijn.follow(testRoy);
+         testMarijn.followUser(testRoy);
          Assert.assertTrue(testMarijn.getFollowing().contains(testRoy));
+    }
+    
+    @Test
+    public void testFollowedBy(){
+        Assert.assertTrue(testRoy.getFollowedBy().isEmpty());
+        testMarijn.followUser(testRoy);
+        Assert.assertTrue(testRoy.getFollowedBy().contains(testMarijn));
     }
 }

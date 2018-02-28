@@ -6,6 +6,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,11 +42,16 @@ public class KwetterUser implements Serializable {
     @ManyToMany
     private List<KwetterUser> following;
     
+    @ManyToMany
+    private List<KwetterUser> followedBy;
+    
     
 
     public KwetterUser(String name, String username) {
         this.name = name;
         this.username = username;
+        this.following = new ArrayList<KwetterUser>();
+        this.followedBy = new ArrayList<KwetterUser>();
     }
 
     /**
@@ -64,6 +70,24 @@ public class KwetterUser implements Serializable {
      */
     public void setFollowing(List<KwetterUser> following) {
         this.following = following;
+    }
+    
+    /**
+     * Get the value of followedBy
+     *
+     * @return the value of followedBy
+     */
+    public List<KwetterUser> getFollowedBy() {
+        return followedBy;
+    }
+
+    /**
+     * Set the value of followedBy
+     *
+     * @param followedBy new value of followedBy
+     */
+    public void setFollowedBy(List<KwetterUser> followedBy) {
+        this.followedBy = followedBy;
     }
 
 
@@ -209,6 +233,10 @@ public class KwetterUser implements Serializable {
     @Override
     public String toString() {
         return "domain.User[ id=" + id + " ]";
+    }
+    
+    public boolean followUser(KwetterUser following){
+        return following.followedBy.add(this) && this.following.add(following);
     }
     
 }
