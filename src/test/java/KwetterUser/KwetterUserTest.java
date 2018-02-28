@@ -46,6 +46,7 @@ public class KwetterUserTest {
     public void tearDown() {
     }
 
+
     @Test
     public void testFollowUser() {
         //Test if user is following other users (shouldn't at first)

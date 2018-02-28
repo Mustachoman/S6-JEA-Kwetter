@@ -7,6 +7,7 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -45,13 +47,42 @@ public class KwetterUser implements Serializable {
     @ManyToMany
     private List<KwetterUser> followedBy;
     
+
+    @OneToMany
+    private List<Tweet> postedTweets;
+
+    public List<Tweet> getPostedTweets() {
+        return postedTweets;
+    }
+
+    public void setPostedTweets(List<Tweet> postedTweets) {
+        this.postedTweets = postedTweets;
+    }
     
+    public Tweet postTweet(String content)
+    {
+        if (content.length() > 140)
+        {
+            throw new IllegalArgumentException("Character limit cannot exceed 140.");
+           
+        }
+        else{
+            Date date = new Date();
+            Tweet newTweet = new Tweet(this,content,date);
+            postedTweets.add(newTweet);
+            return newTweet;
+        }
+    }
 
     public KwetterUser(String name, String username) {
         this.name = name;
         this.username = username;
+
         this.following = new ArrayList<KwetterUser>();
         this.followedBy = new ArrayList<KwetterUser>();
+
+        this.postedTweets = new ArrayList<Tweet>();
+
     }
 
     /**
