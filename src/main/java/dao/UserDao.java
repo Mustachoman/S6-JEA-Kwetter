@@ -25,11 +25,15 @@ public class UserDao {
         return em.createNamedQuery("KwetterUser.allUsers").getResultList();
     }
     
-    public void save(KwetterUser u){
+    public void saveUser(KwetterUser u){
         em.persist(u);
     }
     
     public KwetterUser findUser(Long id){
         return em.find(KwetterUser.class, id);
+    }
+    
+    public KwetterUser updateUser(KwetterUser newKwetterUser){
+        return em.merge(newKwetterUser);
     }
 }

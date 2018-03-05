@@ -5,9 +5,11 @@
  */
 package KwetterUser;
 
+import dao.UserDao;
 import domain.KwetterUser;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -22,12 +24,14 @@ import static org.junit.Assert.*;
  */
 public class KwetterUserTest {
 
-    private final KwetterUser testMarijn;
-    private final KwetterUser testRoy;
+    @Inject
+    UserDao userDao;
+    
+    KwetterUser testMarijn;
+    KwetterUser testRoy;
 
     public KwetterUserTest() {
-        this.testMarijn = new KwetterUser("Marijn", "Spamturtle");
-        this.testRoy = new KwetterUser("Roy", "DaCowGoesMoo");
+       
     }
 
     @BeforeClass
@@ -40,10 +44,15 @@ public class KwetterUserTest {
 
     @Before
     public void setUp() {
+        testMarijn = new KwetterUser("testMarijn", "testSpamturtle");
+        testRoy = new KwetterUser("testRoy", "testDaCowGoesMoo");
+        userDao.saveUser(testMarijn);
+        userDao.saveUser(testMarijn);
     }
 
     @After
     public void tearDown() {
+        
     }
 
 
@@ -57,8 +66,8 @@ public class KwetterUserTest {
     
     @Test
     public void testFollowedBy(){
-        Assert.assertTrue(testRoy.getFollowedBy().isEmpty());
+        Assert.assertTrue(testRoy.getFollowers().isEmpty());
         testMarijn.followUser(testRoy);
-        Assert.assertTrue(testRoy.getFollowedBy().contains(testMarijn));
+        Assert.assertTrue(testRoy.getFollowers().contains(testMarijn));
     }
 }
