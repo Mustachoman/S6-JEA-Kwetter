@@ -37,6 +37,7 @@ public class KwetterUserTest {
     
     KwetterUser testMarijn;
     KwetterUser testRoy;
+    KwetterUser testIvo;
 
     public KwetterUserTest() {
     }
@@ -62,10 +63,14 @@ public class KwetterUserTest {
         
         testMarijn = new KwetterUser("testMarijn", "testSpamturtle");
         testRoy = new KwetterUser("testRoy", "testDaCowGoesMoo");
+        testIvo = new KwetterUser("testIvo", "testGamerkeeperson");
+        
+        testIvo.followUser(testMarijn);
         
         tx.begin();
         em.persist(testMarijn);
         em.persist(testRoy);
+        em.persist(testIvo);
         tx.commit();
     }
 
@@ -76,7 +81,7 @@ public class KwetterUserTest {
     }
 
     @Test
-    public void testFollow() {
+    public void testFollowBidirectional() {
         //Test if user is following other users (shouldn't at first)
          Assert.assertTrue(testMarijn.getFollowing().isEmpty());
          testMarijn.followUser(testRoy);
@@ -89,6 +94,32 @@ public class KwetterUserTest {
          
          testRoy = this.getUser(testRoy.getId());
          Assert.assertTrue(testRoy.getFollowers().contains(testMarijn));
+    }
+    
+    @Test 
+    public void testAlreadyFollowing(){
+        Assert.assertTrue(testIvo.getFollowing().contains(testMarijn));
+        Assert.assertFalse(testIvo.followUser(testMarijn));
+    }
+    
+    @Test
+    public void testUnfollow(){
+        Assert.assertTrue(testIvo.getFollowing().contains(testMarijn));
+        testIvo.unfollowUser(testMarijn);
+        
+        tx.begin();
+        em.merge(testIvo);
+        tx.commit();
+        
+        testIvo = this.getUser(testIvo.getId());
+        
+        Assert.assertFalse(testIvo.getFollowing().contains(testMarijn));
+    }
+    
+    @Test
+    public void testUnfollowNotFollowing(){
+        Assert.assertFalse(testIvo.getFollowing().contains(testRoy));
+        Assert.assertFalse(testIvo.unfollowUser(testRoy));
     }
     
     public KwetterUser getUser(Long searchId){
