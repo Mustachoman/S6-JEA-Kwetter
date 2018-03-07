@@ -82,8 +82,7 @@ public class KwetterUser implements Serializable {
     {
         if (content.length() > 140)
         {
-            throw new IllegalArgumentException("Character limit cannot exceed 140.");
-           
+            throw new IllegalArgumentException("Character limit cannot exceed 140.");           
         }
         else{
             Date date = new Date();
@@ -92,6 +91,7 @@ public class KwetterUser implements Serializable {
             return newTweet;
         }
     }
+
 
     /**
      * Get the value of following
@@ -277,5 +277,7 @@ public class KwetterUser implements Serializable {
         }
         else return false;
     }
+    
+  
     
 }
