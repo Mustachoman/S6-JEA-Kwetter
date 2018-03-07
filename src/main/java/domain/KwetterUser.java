@@ -13,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -22,11 +25,24 @@ import javax.persistence.OneToMany;
  * @author Marijn
  */
 @Entity
-@NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u")
+@NamedQueries({
+    @NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u"),
+    @NamedQuery(name = "KwetterUser.getUser", query = "SELECT u FROM KwetterUser u WHERE u.id LIKE :id")
+})
 public class KwetterUser implements Serializable {
     
     //Default constructor
     public KwetterUser(){}
+    
+    public KwetterUser(String name, String username) {
+        this.name = name;
+        this.username = username;
+
+        this.following = new ArrayList<KwetterUser>();
+        this.followers = new ArrayList<KwetterUser>();
+        this.postedTweets = new ArrayList<Tweet>();
+
+    }
     
     private static final long serialVersionUID = 1L;
     
@@ -41,12 +57,17 @@ public class KwetterUser implements Serializable {
     private String location;
     private String website;
     
+    /**
+     * The users that follow you
+     */
+    @ManyToMany(mappedBy="following")
+    private List<KwetterUser> followers;
+    
+    /**
+     * The users that you follow
+     */
     @ManyToMany
     private List<KwetterUser> following;
-    
-    @ManyToMany
-    private List<KwetterUser> followedBy;
-    
 
     @OneToMany
     private List<Tweet> postedTweets;
@@ -74,17 +95,6 @@ public class KwetterUser implements Serializable {
         }
     }
 
-    public KwetterUser(String name, String username) {
-        this.name = name;
-        this.username = username;
-
-        this.following = new ArrayList<KwetterUser>();
-        this.followedBy = new ArrayList<KwetterUser>();
-
-        this.postedTweets = new ArrayList<Tweet>();
-
-    }
-
     /**
      * Get the value of following
      *
@@ -103,22 +113,12 @@ public class KwetterUser implements Serializable {
         this.following = following;
     }
     
-    /**
-     * Get the value of followedBy
-     *
-     * @return the value of followedBy
-     */
-    public List<KwetterUser> getFollowedBy() {
-        return followedBy;
+    public List<KwetterUser> getFollowers() {
+        return followers;
     }
 
-    /**
-     * Set the value of followedBy
-     *
-     * @param followedBy new value of followedBy
-     */
-    public void setFollowedBy(List<KwetterUser> followedBy) {
-        this.followedBy = followedBy;
+    public void setFollowers(List<KwetterUser> followers) {
+        this.followers = followers;
     }
 
 
@@ -267,7 +267,17 @@ public class KwetterUser implements Serializable {
     }
     
     public boolean followUser(KwetterUser following){
-        return following.followedBy.add(this) && this.following.add(following);
+        if (!this.following.contains(following)) {
+            return this.following.add(following);
+        }
+        else return false;
+    }
+    
+    public boolean unfollowUser(KwetterUser following){
+        if (this.following.contains(following)) {
+            return this.following.remove(following);
+        }
+        else return false;
     }
     
 }
