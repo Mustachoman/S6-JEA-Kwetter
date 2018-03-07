@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Marijn
+ * @author roy_s
  */
 @Stateless
 public class TweetDao {
