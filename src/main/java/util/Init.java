@@ -33,14 +33,13 @@ public class Init {
         System.out.println("init");
         KwetterUser marijn = new KwetterUser("Marijn", "Spamturtle");
         KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
-        userDao.save(marijn);
-        userDao.save(roy);
-        
+
+        userDao.saveUser(marijn);
+        userDao.saveUser(roy);
         Tweet tweet = roy.postTweet("Dit is een tweet");
         tweet.heartTweet(marijn);
         tweet.mentionUser(marijn);
         tweetDao.save(tweet);
-        
-        
+
     }
 }
