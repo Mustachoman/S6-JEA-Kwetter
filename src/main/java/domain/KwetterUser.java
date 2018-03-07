@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -24,11 +25,24 @@ import javax.persistence.OneToMany;
  * @author Marijn
  */
 @Entity
-@NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u")
+@NamedQueries({
+    @NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u"),
+    @NamedQuery(name = "KwetterUser.getUser", query = "SELECT u FROM KwetterUser u WHERE u.id LIKE :id")
+})
 public class KwetterUser implements Serializable {
     
     //Default constructor
     public KwetterUser(){}
+    
+    public KwetterUser(String name, String username) {
+        this.name = name;
+        this.username = username;
+
+        this.following = new ArrayList<KwetterUser>();
+        this.followers = new ArrayList<KwetterUser>();
+        this.postedTweets = new ArrayList<Tweet>();
+
+    }
     
     private static final long serialVersionUID = 1L;
     
@@ -46,23 +60,13 @@ public class KwetterUser implements Serializable {
     /**
      * The users that follow you
      */
-    @ManyToMany
-    @JoinTable(name = "KWETTERUSER_FOLLOWING",
-            joinColumns =
-                @JoinColumn(name = "FOLLOWER"),
-            inverseJoinColumns =
-                @JoinColumn(name = "FOLLOWING"))
+    @ManyToMany(mappedBy="following")
     private List<KwetterUser> followers;
     
     /**
      * The users that you follow
      */
     @ManyToMany
-    @JoinTable(name = "KWETTERUSER_FOLLOWING",
-            joinColumns =
-                @JoinColumn(name = "FOLLOWING"),
-            inverseJoinColumns =
-                @JoinColumn(name = "FOLLOWER"))
     private List<KwetterUser> following;
 
     @OneToMany
@@ -89,16 +93,6 @@ public class KwetterUser implements Serializable {
             postedTweets.add(newTweet);
             return newTweet;
         }
-    }
-
-    public KwetterUser(String name, String username) {
-        this.name = name;
-        this.username = username;
-
-        this.following = new ArrayList<KwetterUser>();
-
-        this.postedTweets = new ArrayList<Tweet>();
-
     }
 
     /**
@@ -273,7 +267,17 @@ public class KwetterUser implements Serializable {
     }
     
     public boolean followUser(KwetterUser following){
-        return this.following.add(following);
+        if (!this.following.contains(following)) {
+            return this.following.add(following);
+        }
+        else return false;
+    }
+    
+    public boolean unfollowUser(KwetterUser following){
+        if (this.following.contains(following)) {
+            return this.following.remove(following);
+        }
+        else return false;
     }
     
 }

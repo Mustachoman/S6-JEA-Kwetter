@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserDao {
     
-    @PersistenceContext
+    @PersistenceContext(unitName="KwetterPU")
     EntityManager em;
     
     public List<KwetterUser> getAllUsers(){

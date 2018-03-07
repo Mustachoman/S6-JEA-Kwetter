@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -30,6 +32,7 @@ public class Tweet implements Serializable {
 
     private KwetterUser owner;
     private String Content;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     
     @ManyToMany
