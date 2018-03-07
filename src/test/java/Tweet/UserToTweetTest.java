@@ -67,14 +67,14 @@ public class UserToTweetTest {
          
      }
      
-     @Test
-     public void testAddMention() {
-         
-         Assert.assertEquals(eersteTweet.getMentions().isEmpty(), true);
-         eersteTweet.mentionUser(testRoy);
-         Assert.assertEquals(eersteTweet.getMentions().contains(testRoy), true);
-         
-     }
+//     @Test
+//     public void testAddMention() {
+//         
+//         Assert.assertEquals(eersteTweet.getMentions().isEmpty(), true);
+//         eersteTweet.mentionUser(testRoy);
+//         Assert.assertEquals(eersteTweet.getMentions().contains(testRoy), true);
+//         
+//     }
      
      @Test
      public void testPostTweet() {

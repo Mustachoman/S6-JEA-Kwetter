@@ -46,8 +46,7 @@ public class KwetterUser implements Serializable {
     
     @ManyToMany
     private List<KwetterUser> followedBy;
-    
-
+ 
     @OneToMany
     private List<Tweet> postedTweets;
 
@@ -63,8 +62,7 @@ public class KwetterUser implements Serializable {
     {
         if (content.length() > 140)
         {
-            throw new IllegalArgumentException("Character limit cannot exceed 140.");
-           
+            throw new IllegalArgumentException("Character limit cannot exceed 140.");           
         }
         else{
             Date date = new Date();
@@ -82,7 +80,7 @@ public class KwetterUser implements Serializable {
         this.followedBy = new ArrayList<KwetterUser>();
 
         this.postedTweets = new ArrayList<Tweet>();
-
+        
     }
 
     /**
@@ -269,5 +267,7 @@ public class KwetterUser implements Serializable {
     public boolean followUser(KwetterUser following){
         return following.followedBy.add(this) && this.following.add(following);
     }
+    
+  
     
 }

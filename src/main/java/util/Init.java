@@ -5,8 +5,11 @@
  */
 package util;
 
+import dao.TweetDao;
 import dao.UserDao;
 import domain.KwetterUser;
+import domain.Tweet;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -22,6 +25,9 @@ public class Init {
     @Inject
     UserDao userDao;
     
+    @Inject
+    TweetDao tweetDao;
+    
     @PostConstruct
     public void init() {
         System.out.println("init");
@@ -29,5 +35,12 @@ public class Init {
         KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
         userDao.save(marijn);
         userDao.save(roy);
+        
+        Tweet tweet = roy.postTweet("Dit is een tweet");
+        tweet.heartTweet(marijn);
+        tweet.mentionUser(marijn);
+        tweetDao.save(tweet);
+        
+        
     }
 }
