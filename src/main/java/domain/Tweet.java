@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,7 +28,10 @@ import javax.persistence.TemporalType;
  * @author roy_s
  */
 @Entity
-@NamedQuery(name = "Tweets.allTweets", query = "SELECT t FROM Tweet t")
+@NamedQueries({
+    @NamedQuery(name = "Tweet.allTweets", query = "SELECT t FROM Tweet t"),
+    @NamedQuery(name = "Tweet.getTweet", query = "SELECT t FROM Tweet t WHERE t.id LIKE :id")
+})
 public class Tweet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,7 +39,7 @@ public class Tweet implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity=KwetterUser.class,cascade = CascadeType.REMOVE)
     private KwetterUser owner;
 
     private String content;
@@ -42,11 +47,11 @@ public class Tweet implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     
-    @ManyToMany
+    @ManyToMany(targetEntity=KwetterUser.class,cascade = CascadeType.REMOVE)
     @JoinTable(name = "HEARTS")
     private List<KwetterUser> hearts;
     
-    @ManyToMany
+    @ManyToMany(targetEntity=KwetterUser.class,cascade = CascadeType.REMOVE)
     @JoinTable(name = "MENTIONS")
     private List<KwetterUser> mentions;
     
