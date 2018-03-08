@@ -18,7 +18,8 @@ public class KwetterUserDTOMapper {
     }
 
     public KwetterUserDTO mapKwetterUser(KwetterUser kwetterUserToMap) {
-        return new KwetterUserDTO(kwetterUserToMap.getName(),
+        return new KwetterUserDTO(kwetterUserToMap.getId(),
+                kwetterUserToMap.getName(),
                 kwetterUserToMap.getUsername(),
                 kwetterUserToMap.getPhoto(),
                 kwetterUserToMap.getBio(),

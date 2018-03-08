@@ -112,9 +112,16 @@ public class KwetterUserResource {
     }
     
     @PUT
-    @Path("update/{id}")
+    @Path("update")
     public KwetterUserDTO updateUser(KwetterUserDTO updateUserDTO) {
-        KwetterUser updateUser = new KwetterUserDTOMapper().mapKwetterUserDTO(updateUserDTO);
+        KwetterUser updateUser = kwetterUserService.findUser(updateUserDTO.getId());
+        
+        updateUser.setName(updateUserDTO.getName());
+        updateUser.setUsername(updateUserDTO.getUsername());
+        updateUser.setPhoto(updateUserDTO.getPhoto());
+        updateUser.setBio(updateUserDTO.getBio());
+        updateUser.setLocation(updateUserDTO.getLocation());
+        updateUser.setWebsite(updateUserDTO.getWebsite());
         
         updateUser = kwetterUserService.updateUser(updateUser);
 
