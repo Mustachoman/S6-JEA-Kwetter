@@ -17,23 +17,24 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class UserDao {
-    
-    @PersistenceContext(unitName="KwetterPU")
+
+    @PersistenceContext(unitName = "KwetterPU")
     EntityManager em;
-    
-    public List<KwetterUser> getAllUsers(){
+
+    public List<KwetterUser> getAllUsers() {
         return em.createNamedQuery("KwetterUser.allUsers").getResultList();
     }
-    
-    public void saveUser(KwetterUser u){
-        em.persist(u);
+
+    public KwetterUser newUser(KwetterUser newKwetterUser) {
+        em.persist(newKwetterUser);
+        return newKwetterUser;
     }
-    
-    public KwetterUser findUser(Long id){
+
+    public KwetterUser findUser(Long id) {
         return em.find(KwetterUser.class, id);
     }
-    
-    public KwetterUser updateUser(KwetterUser newKwetterUser){
-        return em.merge(newKwetterUser);
+
+    public KwetterUser updateUser(KwetterUser updatedKwetterUser) {
+        return em.merge(updatedKwetterUser);
     }
 }

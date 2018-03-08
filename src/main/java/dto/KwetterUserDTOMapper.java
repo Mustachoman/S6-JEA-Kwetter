@@ -25,4 +25,15 @@ public class KwetterUserDTOMapper {
                 kwetterUserToMap.getLocation(),
                 kwetterUserToMap.getWebsite());
     }
+    
+    public KwetterUser mapKwetterUserDTO(KwetterUserDTO kwetterUserDTOToMap) {
+        return new KwetterUser(
+                kwetterUserDTOToMap.getName(),
+                kwetterUserDTOToMap.getUsername(),
+                kwetterUserDTOToMap.getPhoto(),
+                kwetterUserDTOToMap.getBio(),
+                kwetterUserDTOToMap.getLocation(),
+                kwetterUserDTOToMap.getWebsite()
+        );
+    }
 }
