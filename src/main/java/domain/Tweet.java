@@ -72,6 +72,7 @@ public class Tweet implements Serializable {
     }
 
     public KwetterUser getOwner() {
+        
         return owner;
     }
 
