@@ -34,8 +34,8 @@ public class Init {
         KwetterUser marijn = new KwetterUser("Marijn", "Spamturtle");
         KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
 
-        userDao.saveUser(marijn);
-        userDao.saveUser(roy);
+        userDao.newUser(marijn);
+        userDao.newUser(roy);
         Tweet tweet = roy.postTweet("Dit is een tweet");
         tweet.heartTweet(marijn);
         tweet.mentionUser(marijn);

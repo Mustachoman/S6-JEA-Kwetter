@@ -10,6 +10,7 @@ package dto;
  * @author Marijn
  */
 public class KwetterUserDTO {
+    private Long id;
     private String name;
     private String username;
     private String photo;
@@ -17,7 +18,8 @@ public class KwetterUserDTO {
     private String location;
     private String website;
     
-    public KwetterUserDTO(String name, String username, String photo, String bio, String location, String website) {
+    public KwetterUserDTO(Long id, String name, String username, String photo, String bio, String location, String website) {
+        this.id = id;
         this.name = name;
         this.username = username;
         this.photo = photo;
@@ -27,6 +29,14 @@ public class KwetterUserDTO {
     }
 
     public KwetterUserDTO() {
+    }
+    
+    public Long getId(){
+        return id;
+    }
+    
+    public void setId(Long id){
+        this.id = id;
     }
 
     public String getName() {
