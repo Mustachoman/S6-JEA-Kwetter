@@ -44,7 +44,7 @@ public class TweetResource {
     KwetterUserService kwetterUserService;
 
     @GET
-    @Path("all")
+    @Path("")
     public List<TweetDTO> allTweets() {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TweetResource {
     }
     
     @GET
-    @Path("{id}/allHearts")
+    @Path("allHearts/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<KwetterUserDTO> getHearts(@PathParam("id") Long id){
         Tweet foundTweet = tweetService.findTweet(id);
@@ -85,15 +85,15 @@ public class TweetResource {
         tweetService.postTweet(newTweet);
         
     }
-    @POST
-    @Path("{id}/heart")
-    public void heartTweet(KwetterUserDTO heartingUserDTO,@PathParam("id") Long id) {
+    @PUT
+    @Path("heart/{id}")
+    public TweetDTO heartTweet(KwetterUserDTO heartingUserDTO,@PathParam("id") Long id) {
         
         KwetterUser heartingUser = kwetterUserService.findUser(heartingUserDTO.getId());
         Tweet tweetToHeart = tweetService.findTweet(id);
         tweetToHeart.heartTweet(heartingUser);
         tweetService.updateTweet(tweetToHeart);
-     
+        return new TweetDTOMapper().mapTweets(tweetToHeart);
     }
 
 //    @GET
