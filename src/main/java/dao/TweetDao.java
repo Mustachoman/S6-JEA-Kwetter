@@ -19,11 +19,11 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class TweetDao {
     
-    @PersistenceContext
+    @PersistenceContext(unitName="KwetterPU")
     EntityManager em;
     
     public List<Tweet> getAllTweets(){
-        return em.createNamedQuery("Tweets.allTweets").getResultList();
+        return em.createNamedQuery("Tweet.allTweets").getResultList();
     }
     
     public void save(Tweet t){
@@ -32,5 +32,10 @@ public class TweetDao {
     
     public Tweet findTweet(Long id){
         return em.find(Tweet.class, id);
+    }
+    
+    public void update(Tweet t)
+    {
+        em.merge(t);
     }
 }

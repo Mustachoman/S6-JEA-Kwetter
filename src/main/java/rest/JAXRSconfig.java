@@ -23,6 +23,7 @@ public class JAXRSconfig extends Application {
         HashSet<Class<?>> c = new HashSet<>();
 
         c.add(KwetterUserResource.class);
+        c.add(TweetResource.class);
 
         classes = Collections.unmodifiableSet(c);
     }
