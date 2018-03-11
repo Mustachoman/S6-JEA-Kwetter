@@ -13,6 +13,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -32,7 +33,7 @@ public class KwetterUserResource {
     KwetterUserService kwetterUserService;
 
     @GET
-    @Path("all")
+    @Path("")
     public List<KwetterUserDTO> allUsers() {
         List<KwetterUser> users = kwetterUserService.allUsers();
         List<KwetterUserDTO> usersDTO = new ArrayList<>();
@@ -42,7 +43,6 @@ public class KwetterUserResource {
 
     @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public KwetterUserDTO getUser(@PathParam("id") Long id) {
         KwetterUser foundUser = kwetterUserService.findUser(id);
         KwetterUserDTO foundUserDTO = new KwetterUserDTOMapper().mapKwetterUser(foundUser);
@@ -50,7 +50,7 @@ public class KwetterUserResource {
     }
 
     @GET
-    @Path("{id}/following")
+    @Path("following/{id}")
     public List<KwetterUserDTO> userFollowing(@PathParam("id") Long id) {
         KwetterUser foundUser = kwetterUserService.findUser(id);
         List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
@@ -58,9 +58,9 @@ public class KwetterUserResource {
         foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
         return foundUserFollowingDTO;
     }
-    
+
     @GET
-    @Path("{id}/followers")
+    @Path("followers/{id}")
     public List<KwetterUserDTO> userFollowers(@PathParam("id") Long id) {
         KwetterUser foundUser = kwetterUserService.findUser(id);
         List<KwetterUser> foundUserFollowers = foundUser.getFollowers();
@@ -70,7 +70,7 @@ public class KwetterUserResource {
     }
 
     @PUT
-    @Path("{followerId}/follow/{followingId}")
+    @Path("follow/{followerId}/{followingId}")
     public KwetterUserDTO followUser(@PathParam("followerId") Long followerId, @PathParam("followingId") Long followingId) {
         KwetterUser follower = kwetterUserService.findUser(followerId);
         KwetterUser following = kwetterUserService.findUser(followingId);
@@ -84,9 +84,9 @@ public class KwetterUserResource {
             return null;
         }
     }
-    
+
     @PUT
-    @Path("{followerId}/unfollow/{followingId}")
+    @Path("unfollow/{followerId}/{followingId}")
     public KwetterUserDTO unfollowUser(@PathParam("followerId") Long followerId, @PathParam("followingId") Long followingId) {
         KwetterUser follower = kwetterUserService.findUser(followerId);
         KwetterUser following = kwetterUserService.findUser(followingId);
@@ -99,6 +99,33 @@ public class KwetterUserResource {
         } else {
             return null;
         }
+    }
+
+    @POST
+    @Path("new")
+    public KwetterUserDTO newUser(KwetterUserDTO newUserDTO) {
+        KwetterUser newUser = new KwetterUserDTOMapper().mapKwetterUserDTO(newUserDTO);
+        
+        newUser = kwetterUserService.newUser(newUser);
+
+        return new KwetterUserDTOMapper().mapKwetterUser(newUser);
+    }
+    
+    @PUT
+    @Path("update")
+    public KwetterUserDTO updateUser(KwetterUserDTO updateUserDTO) {
+        KwetterUser updateUser = kwetterUserService.findUser(updateUserDTO.getId());
+        
+        updateUser.setName(updateUserDTO.getName());
+        updateUser.setUsername(updateUserDTO.getUsername());
+        updateUser.setPhoto(updateUserDTO.getPhoto());
+        updateUser.setBio(updateUserDTO.getBio());
+        updateUser.setLocation(updateUserDTO.getLocation());
+        updateUser.setWebsite(updateUserDTO.getWebsite());
+        
+        updateUser = kwetterUserService.updateUser(updateUser);
+
+        return new KwetterUserDTOMapper().mapKwetterUser(updateUser);
     }
 
 }

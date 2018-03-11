@@ -34,4 +34,8 @@ public class KwetterUserService {
     public KwetterUser updateUser(KwetterUser newUser){
         return kwetterUserDao.updateUser(newUser);
     }
+    
+    public KwetterUser newUser(KwetterUser newUser){
+        return kwetterUserDao.newUser(newUser);
+    }
 }

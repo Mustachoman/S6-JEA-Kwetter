@@ -18,7 +18,10 @@ public class KwetterUserDTO {
     private String location;
     private String website;
     
-    public KwetterUserDTO(Long id,String name, String username, String photo, String bio, String location, String website) {
+
+    
+    public KwetterUserDTO(Long id, String name, String username, String photo, String bio, String location, String website) {
+
         this.id = id;
         this.name = name;
         this.username = username;
@@ -38,6 +41,8 @@ public class KwetterUserDTO {
 
     public KwetterUserDTO() {
     }
+    
+    
 
     public String getName() {
         return name;

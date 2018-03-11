@@ -32,6 +32,19 @@ public class KwetterUser implements Serializable {
     //Default constructor
     public KwetterUser(){}
     
+    public KwetterUser(String name, String username, String photo, String bio, String location, String website ) {
+        this.name = name;
+        this.username = username;
+        this.photo = photo;
+        this.bio = bio;
+        this.location = location;
+        this.website = website;
+
+        this.following = new ArrayList<KwetterUser>();
+        this.followers = new ArrayList<KwetterUser>();
+        this.postedTweets = new ArrayList<Tweet>();
+    }
+    
     public KwetterUser(String name, String username) {
         this.name = name;
         this.username = username;
@@ -39,7 +52,6 @@ public class KwetterUser implements Serializable {
         this.following = new ArrayList<KwetterUser>();
         this.followers = new ArrayList<KwetterUser>();
         this.postedTweets = new ArrayList<Tweet>();
-
     }
     
     private static final long serialVersionUID = 1L;
