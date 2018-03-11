@@ -36,4 +36,9 @@ public class TweetService {
     public void postTweet(Tweet newTweet){
         tweetDao.save(newTweet);
     }
+    
+    public void updateTweet(Tweet updatedTweet)
+    {
+        tweetDao.update(updatedTweet);
+    }
 }

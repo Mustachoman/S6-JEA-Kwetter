@@ -74,7 +74,7 @@ public class TweetResource {
     
     @POST
     @Path("post")
-    public void followUser(TweetDTO tweet) {
+    public void postTweet(TweetDTO tweet) {
         Date date = new Date();
         TweetDTO newTweetDTO = tweet;
         KwetterUserDTO tweetOwnerDTO = tweet.getOwner();
@@ -84,6 +84,16 @@ public class TweetResource {
         
         tweetService.postTweet(newTweet);
         
+    }
+    @POST
+    @Path("{id}/heart")
+    public void heartTweet(KwetterUserDTO heartingUserDTO,@PathParam("id") Long id) {
+        
+        KwetterUser heartingUser = kwetterUserService.findUser(heartingUserDTO.getId());
+        Tweet tweetToHeart = tweetService.findTweet(id);
+        tweetToHeart.heartTweet(heartingUser);
+        tweetService.updateTweet(tweetToHeart);
+     
     }
 
 //    @GET

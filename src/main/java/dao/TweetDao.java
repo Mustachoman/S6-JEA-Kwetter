@@ -33,4 +33,9 @@ public class TweetDao {
     public Tweet findTweet(Long id){
         return em.find(Tweet.class, id);
     }
+    
+    public void update(Tweet t)
+    {
+        em.merge(t);
+    }
 }
