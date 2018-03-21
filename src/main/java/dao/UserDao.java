@@ -5,6 +5,7 @@
  */
 package dao;
 
+import domain.Group;
 import domain.KwetterUser;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -36,5 +37,11 @@ public class UserDao {
 
     public KwetterUser updateUser(KwetterUser updatedKwetterUser) {
         return em.merge(updatedKwetterUser);
+    }
+    
+    public Group newGroup(Group group)
+    {
+        em.persist(group);
+        return group;
     }
 }
