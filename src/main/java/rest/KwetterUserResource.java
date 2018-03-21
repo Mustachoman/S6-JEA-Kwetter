@@ -31,7 +31,11 @@ public class KwetterUserResource {
 
     @Inject
     KwetterUserService kwetterUserService;
-
+    
+    /**
+     * GET request to get all KwetterUsers
+     * @return List of KwetterUserDTO
+     */
     @GET
     @Path("")
     public List<KwetterUserDTO> allUsers() {
@@ -40,69 +44,14 @@ public class KwetterUserResource {
         users.forEach(user -> usersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
         return usersDTO;
     }
-
-    @GET
-    @Path("{id}")
-    public KwetterUserDTO getUser(@PathParam("id") Long id) {
-        KwetterUser foundUser = kwetterUserService.findUser(id);
-        KwetterUserDTO foundUserDTO = new KwetterUserDTOMapper().mapKwetterUser(foundUser);
-        return foundUserDTO;
-    }
-
-    @GET
-    @Path("following/{id}")
-    public List<KwetterUserDTO> userFollowing(@PathParam("id") Long id) {
-        KwetterUser foundUser = kwetterUserService.findUser(id);
-        List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
-        List<KwetterUserDTO> foundUserFollowingDTO = new ArrayList<>();
-        foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
-        return foundUserFollowingDTO;
-    }
-
-    @GET
-    @Path("followers/{id}")
-    public List<KwetterUserDTO> userFollowers(@PathParam("id") Long id) {
-        KwetterUser foundUser = kwetterUserService.findUser(id);
-        List<KwetterUser> foundUserFollowers = foundUser.getFollowers();
-        List<KwetterUserDTO> foundUserFollowersDTO = new ArrayList<>();
-        foundUserFollowers.forEach(user -> foundUserFollowersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
-        return foundUserFollowersDTO;
-    }
-
-    @PUT
-    @Path("follow/{followerId}/{followingId}")
-    public KwetterUserDTO followUser(@PathParam("followerId") Long followerId, @PathParam("followingId") Long followingId) {
-        KwetterUser follower = kwetterUserService.findUser(followerId);
-        KwetterUser following = kwetterUserService.findUser(followingId);
-
-        if (follower != null && following != null) {
-            follower.followUser(following);
-            kwetterUserService.updateUser(follower);
-            KwetterUserDTO followerUserDTO = new KwetterUserDTOMapper().mapKwetterUser(follower);
-            return followerUserDTO;
-        } else {
-            return null;
-        }
-    }
-
-    @PUT
-    @Path("unfollow/{followerId}/{followingId}")
-    public KwetterUserDTO unfollowUser(@PathParam("followerId") Long followerId, @PathParam("followingId") Long followingId) {
-        KwetterUser follower = kwetterUserService.findUser(followerId);
-        KwetterUser following = kwetterUserService.findUser(followingId);
-
-        if (follower != null && following != null) {
-            follower.unfollowUser(following);
-            kwetterUserService.updateUser(follower);
-            KwetterUserDTO followerUserDTO = new KwetterUserDTOMapper().mapKwetterUser(follower);
-            return followerUserDTO;
-        } else {
-            return null;
-        }
-    }
-
+    
+    /**
+     * POST request to create new KwetterUser
+     * @param newUserDTO
+     * @return KwetterUserDTO
+     */
     @POST
-    @Path("new")
+    @Path("")
     public KwetterUserDTO newUser(KwetterUserDTO newUserDTO) {
         KwetterUser newUser = new KwetterUserDTOMapper().mapKwetterUserDTO(newUserDTO);
         
@@ -111,8 +60,13 @@ public class KwetterUserResource {
         return new KwetterUserDTOMapper().mapKwetterUser(newUser);
     }
     
+    /**
+     * PUT request to update existing KwetterUser
+     * @param updateUserDTO
+     * @return KwetterUserDTO (updated)
+     */
     @PUT
-    @Path("update")
+    @Path("")
     public KwetterUserDTO updateUser(KwetterUserDTO updateUserDTO) {
         KwetterUser updateUser = kwetterUserService.findUser(updateUserDTO.getId());
         
@@ -128,4 +82,71 @@ public class KwetterUserResource {
         return new KwetterUserDTOMapper().mapKwetterUser(updateUser);
     }
 
+    /**
+     * GET request of a single KwetterUser by Id
+     * @param userId
+     * @return KwetterUserDTO
+     */
+    @GET
+    @Path("{userId}")
+    public KwetterUserDTO getUser(@PathParam("userId") Long userId) {
+        KwetterUser foundUser = kwetterUserService.findUser(userId);
+        KwetterUserDTO foundUserDTO = new KwetterUserDTOMapper().mapKwetterUser(foundUser);
+        return foundUserDTO;
+    }
+
+    /**
+     * GET request to get following of a KwetterUser found by Id
+     * @param userId
+     * @return List of KwetterUserDTO
+     */
+    @GET
+    @Path("{userId}/following")
+    public List<KwetterUserDTO> userFollowing(@PathParam("userId") Long userId) {
+        KwetterUser foundUser = kwetterUserService.findUser(userId);
+        List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
+        List<KwetterUserDTO> foundUserFollowingDTO = new ArrayList<>();
+        foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        return foundUserFollowingDTO;
+    }
+
+    /**
+     * GET request to get followers of a KwetterUser found by Id
+     * @param userId
+     * @return List of KwetterUserDTO
+     */
+    @GET
+    @Path("{userId}/followers")
+    public List<KwetterUserDTO> userFollowers(@PathParam("userId") Long userId) {
+        KwetterUser foundUser = kwetterUserService.findUser(userId);
+        List<KwetterUser> foundUserFollowers = foundUser.getFollowers();
+        List<KwetterUserDTO> foundUserFollowersDTO = new ArrayList<>();
+        foundUserFollowers.forEach(user -> foundUserFollowersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        return foundUserFollowersDTO;
+    }
+
+    /**
+     * PUT request to update following of a KwetterUser found by Id
+     * following/un-following another KwetterUser
+     * @param userId
+     * @param followingUserDTO
+     * @return 
+     */
+    @PUT
+    @Path("{userId}/following/{followId}")
+    public KwetterUserDTO updateFollowing(@PathParam("userId") Long userId, @PathParam("followId") Long followId) {
+        KwetterUser user = kwetterUserService.findUser(userId);
+        KwetterUser follow = kwetterUserService.findUser(followId);
+
+        if (user != null && follow != null) {
+            if (!user.getFollowing().contains(follow)){
+                user.followUser(follow);
+            }else user.unfollowUser(follow);
+            kwetterUserService.updateUser(user);
+            KwetterUserDTO followerUserDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
+            return followerUserDTO;
+        } else {
+            return null;
+        }
+    }
 }
