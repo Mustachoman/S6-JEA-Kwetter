@@ -18,7 +18,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import service.KwetterUserService;
 
 /**
@@ -37,11 +40,21 @@ public class KwetterUserResource {
      * @return List of KwetterUserDTO
      */
     @GET
-    @Path("")
-    public List<KwetterUserDTO> allUsers() {
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<KwetterUserDTO> allUsers(@Context UriInfo uriInfo) {
         List<KwetterUser> users = kwetterUserService.allUsers();
         List<KwetterUserDTO> usersDTO = new ArrayList<>();
-        users.forEach(user -> usersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        users.forEach(user -> { 
+                KwetterUserDTO userDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
+                
+                String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(user.getId().toString()).toString();
+                
+                userDTO.setUri(uri);
+                usersDTO.add(userDTO);
+        });
         return usersDTO;
     }
     
@@ -51,13 +64,22 @@ public class KwetterUserResource {
      * @return KwetterUserDTO
      */
     @POST
-    @Path("")
-    public KwetterUserDTO newUser(KwetterUserDTO newUserDTO) {
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public KwetterUserDTO newUser(@Context UriInfo uriInfo, KwetterUserDTO newUserDTO) {
         KwetterUser newUser = new KwetterUserDTOMapper().mapKwetterUserDTO(newUserDTO);
         
         newUser = kwetterUserService.newUser(newUser);
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(newUser.getId().toString()).toString();
+        
+        KwetterUserDTO returnUserDTO = new KwetterUserDTOMapper().mapKwetterUser(newUser);
+        
+        returnUserDTO.setUri(uri);
 
-        return new KwetterUserDTOMapper().mapKwetterUser(newUser);
+        return returnUserDTO;
     }
     
     /**
@@ -66,8 +88,9 @@ public class KwetterUserResource {
      * @return KwetterUserDTO (updated)
      */
     @PUT
-    @Path("")
-    public KwetterUserDTO updateUser(KwetterUserDTO updateUserDTO) {
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public KwetterUserDTO updateUser(@Context UriInfo uriInfo, KwetterUserDTO updateUserDTO) {
         KwetterUser updateUser = kwetterUserService.findUser(updateUserDTO.getId());
         
         updateUser.setName(updateUserDTO.getName());
@@ -78,6 +101,13 @@ public class KwetterUserResource {
         updateUser.setWebsite(updateUserDTO.getWebsite());
         
         updateUser = kwetterUserService.updateUser(updateUser);
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(updateUser.getId().toString()).toString();
+        
+        KwetterUserDTO returnUserDTO = new KwetterUserDTOMapper().mapKwetterUser(updateUser);
+        returnUserDTO.setUri(uri);
 
         return new KwetterUserDTOMapper().mapKwetterUser(updateUser);
     }
@@ -89,10 +119,17 @@ public class KwetterUserResource {
      */
     @GET
     @Path("{userId}")
-    public KwetterUserDTO getUser(@PathParam("userId") Long userId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public KwetterUserDTO getUser(@Context UriInfo uriInfo, @PathParam("userId") Long userId) {
         KwetterUser foundUser = kwetterUserService.findUser(userId);
-        KwetterUserDTO foundUserDTO = new KwetterUserDTOMapper().mapKwetterUser(foundUser);
-        return foundUserDTO;
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(foundUser.getId().toString()).toString();
+        
+        KwetterUserDTO returnUserDTO = new KwetterUserDTOMapper().mapKwetterUser(foundUser);
+        returnUserDTO.setUri(uri);
+        return returnUserDTO;
     }
 
     /**
@@ -102,11 +139,21 @@ public class KwetterUserResource {
      */
     @GET
     @Path("{userId}/following")
-    public List<KwetterUserDTO> userFollowing(@PathParam("userId") Long userId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<KwetterUserDTO> userFollowing(@Context UriInfo uriInfo, @PathParam("userId") Long userId) {
         KwetterUser foundUser = kwetterUserService.findUser(userId);
         List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
         List<KwetterUserDTO> foundUserFollowingDTO = new ArrayList<>();
-        foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        foundUserFollowing.forEach(user -> { 
+                KwetterUserDTO userDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
+                
+                String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(user.getId().toString()).toString();
+                
+                userDTO.setUri(uri);
+                foundUserFollowingDTO.add(userDTO);
+        });
         return foundUserFollowingDTO;
     }
 
@@ -117,11 +164,21 @@ public class KwetterUserResource {
      */
     @GET
     @Path("{userId}/followers")
-    public List<KwetterUserDTO> userFollowers(@PathParam("userId") Long userId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<KwetterUserDTO> userFollowers(@Context UriInfo uriInfo, @PathParam("userId") Long userId) {
         KwetterUser foundUser = kwetterUserService.findUser(userId);
         List<KwetterUser> foundUserFollowers = foundUser.getFollowers();
         List<KwetterUserDTO> foundUserFollowersDTO = new ArrayList<>();
-        foundUserFollowers.forEach(user -> foundUserFollowersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        foundUserFollowers.forEach(user -> { 
+                KwetterUserDTO userDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
+                
+                String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(user.getId().toString()).toString();
+                
+                userDTO.setUri(uri);
+                foundUserFollowersDTO.add(userDTO);
+        });
         return foundUserFollowersDTO;
     }
 
@@ -134,7 +191,8 @@ public class KwetterUserResource {
      */
     @PUT
     @Path("{userId}/following/{followId}")
-    public KwetterUserDTO updateFollowing(@PathParam("userId") Long userId, @PathParam("followId") Long followId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public KwetterUserDTO updateFollowing(@Context UriInfo uriInfo, @PathParam("userId") Long userId, @PathParam("followId") Long followId) {
         KwetterUser user = kwetterUserService.findUser(userId);
         KwetterUser follow = kwetterUserService.findUser(followId);
 
@@ -142,8 +200,17 @@ public class KwetterUserResource {
             if (!user.getFollowing().contains(follow)){
                 user.followUser(follow);
             }else user.unfollowUser(follow);
+            
             kwetterUserService.updateUser(user);
+            
+            String uri = uriInfo.getBaseUriBuilder()
+                    .path(KwetterUserResource.class)
+                    .path(user.getId().toString()).toString();
+            
             KwetterUserDTO followerUserDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
+            
+            followerUserDTO.setUri(uri);
+            
             return followerUserDTO;
         } else {
             return null;

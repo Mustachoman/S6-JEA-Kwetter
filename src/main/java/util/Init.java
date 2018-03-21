@@ -36,7 +36,7 @@ public class Init {
         KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
         Group group = new Group();
         group.setGroupName("Admin");
-        userDao.newGroup(group);
+//        userDao.newGroup(group);
         userDao.newUser(marijn);
         userDao.newUser(roy);
         Tweet tweet = roy.postTweet("Dit is een tweet");
