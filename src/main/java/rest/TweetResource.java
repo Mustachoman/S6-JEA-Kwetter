@@ -14,6 +14,7 @@ import dto.TweetDTOMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -49,6 +50,19 @@ public class TweetResource {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();
         tweets.forEach(tweet -> tweetDTO.add(new TweetDTOMapper().mapTweets(tweet)));
+        return tweetDTO;
+    }
+    
+    @GET
+    @Path("allTweets/{id}")
+    public List<TweetDTO> allTweetsFromUser(@PathParam("id") Long id) {
+        List<Tweet> tweets = tweetService.allTweets();
+        List<TweetDTO> tweetDTO = new ArrayList<>();
+        
+        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), id))).forEachOrdered((tweet) -> {
+            tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
+        });
+       
         return tweetDTO;
     }
 

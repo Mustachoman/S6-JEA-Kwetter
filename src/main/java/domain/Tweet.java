@@ -39,7 +39,7 @@ public class Tweet implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(targetEntity=KwetterUser.class,cascade = CascadeType.REMOVE)
+    @ManyToOne
     private KwetterUser owner;
 
     private String content;
