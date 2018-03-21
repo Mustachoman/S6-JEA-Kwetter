@@ -53,41 +53,8 @@ public class TweetResource {
         return tweetDTO;
     }
     
-    @GET
-    @Path("allTweets/{id}")
-    public List<TweetDTO> allTweetsFromUser(@PathParam("id") Long id) {
-        List<Tweet> tweets = tweetService.allTweets();
-        List<TweetDTO> tweetDTO = new ArrayList<>();
-        
-        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), id))).forEachOrdered((tweet) -> {
-            tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
-        });
-       
-        return tweetDTO;
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public TweetDTO getTweet(@PathParam("id") Long id) {
-        Tweet foundTweet = tweetService.findTweet(id);
-        TweetDTO tweetDTO = new TweetDTOMapper().mapTweets(foundTweet);
-        return tweetDTO;
-    }
-    
-    @GET
-    @Path("allHearts/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<KwetterUserDTO> getHearts(@PathParam("id") Long id){
-        Tweet foundTweet = tweetService.findTweet(id);
-        List<KwetterUser> foundHearts = foundTweet.getHearts();
-        List<KwetterUserDTO> foundHeartsDTO = new ArrayList<>();
-        foundHearts.forEach(user -> foundHeartsDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
-        return foundHeartsDTO;
-    }
-    
     @POST
-    @Path("post")
+    @Path("")
     public void postTweet(TweetDTO tweet) {
         Date date = new Date();
         TweetDTO newTweetDTO = tweet;
@@ -95,31 +62,50 @@ public class TweetResource {
         KwetterUser tweetOwner = kwetterUserService.findUser(tweetOwnerDTO.getId());
         Tweet newTweet = new Tweet(tweetOwner,newTweetDTO.getContent(),date);
         
-        
         tweetService.postTweet(newTweet);
-        
     }
+    
+    @GET
+    @Path("user/{userId}")
+    public List<TweetDTO> allTweetsFromUser(@PathParam("userId") Long userId) {
+        List<Tweet> tweets = tweetService.allTweets();
+        List<TweetDTO> tweetDTO = new ArrayList<>();
+        
+        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), userId))).forEachOrdered((tweet) -> {
+            tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
+        });
+       
+        return tweetDTO;
+    }
+
+    @GET
+    @Path("{tweetId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public TweetDTO getTweet(@PathParam("tweetId") Long tweetId) {
+        Tweet foundTweet = tweetService.findTweet(tweetId);
+        TweetDTO tweetDTO = new TweetDTOMapper().mapTweets(foundTweet);
+        return tweetDTO;
+    }
+    
+    @GET
+    @Path("{tweetId}/hearts")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<KwetterUserDTO> getHearts(@PathParam("tweetId") Long tweetId){
+        Tweet foundTweet = tweetService.findTweet(tweetId);
+        List<KwetterUser> foundHearts = foundTweet.getHearts();
+        List<KwetterUserDTO> foundHeartsDTO = new ArrayList<>();
+        foundHearts.forEach(user -> foundHeartsDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        return foundHeartsDTO;
+    }
+    
     @PUT
-    @Path("heart/{id}")
-    public TweetDTO heartTweet(KwetterUserDTO heartingUserDTO,@PathParam("id") Long id) {
+    @Path("heart/{tweetId}")
+    public TweetDTO heartTweet(KwetterUserDTO heartingUserDTO, @PathParam("tweetId") Long tweetId) {
         
         KwetterUser heartingUser = kwetterUserService.findUser(heartingUserDTO.getId());
-        Tweet tweetToHeart = tweetService.findTweet(id);
+        Tweet tweetToHeart = tweetService.findTweet(tweetId);
         tweetToHeart.heartTweet(heartingUser);
         tweetService.updateTweet(tweetToHeart);
         return new TweetDTOMapper().mapTweets(tweetToHeart);
     }
-
-//    @GET
-//    @Path("{id}/following")
-//    public List<KwetterUserDTO> userFollowing(@PathParam("id") Long id) {
-//        KwetterUser foundUser = kwetterUserService.findUser(id);
-//        List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
-//        List<KwetterUserDTO> foundUserFollowingDTO = new ArrayList<>();
-//        foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
-//        return foundUserFollowingDTO;
-//    }
-    
-    
-
 }
