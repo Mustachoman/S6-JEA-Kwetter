@@ -7,8 +7,8 @@ package util;
 
 import dao.TweetDao;
 import dao.UserDao;
-import domain.Group;
 import domain.KwetterUser;
+import domain.KwetterGroup;
 import domain.Tweet;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -34,8 +34,8 @@ public class Init {
         System.out.println("init");
         KwetterUser marijn = new KwetterUser("Marijn", "Spamturtle");
         KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
-        Group group = new Group();
-        group.setGroupName("Admin");
+        KwetterGroup group = new KwetterGroup("admin");
+        group.addUser(marijn);
         userDao.newGroup(group);
         userDao.newUser(marijn);
         userDao.newUser(roy);

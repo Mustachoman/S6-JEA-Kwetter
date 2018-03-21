@@ -6,7 +6,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,19 +23,26 @@ import javax.persistence.Table;
  * @author roy_s
  */
 @Entity
-@Table(name = "UserGroup")
-public class Group implements Serializable
-{
+@Table(name = "KWETTERGROUP")
+public class KwetterGroup implements Serializable {
+
     @Id
-    private String groupName;
-    @ManyToMany
-    @JoinTable(name="USER_GROUP",
-    joinColumns = @JoinColumn(name = "groupName", 
-        referencedColumnName = "groupName"), 
-    inverseJoinColumns = @JoinColumn(name = "userName", 
-        referencedColumnName = "userName"))
+    private String groupname;
+
+    @ManyToMany(targetEntity = KwetterUser.class, cascade = CascadeType.REMOVE)
+    @JoinTable(name = "KWETTERUSER_GROUP", joinColumns = @JoinColumn(name = "GROUPNAME",
+            referencedColumnName = "GROUPNAME"),
+            inverseJoinColumns = @JoinColumn(name = "USERNAME",
+                    referencedColumnName = "USERNAME"))
     private List<KwetterUser> users;
-    // getters, setters, no‐arg constructor
+
+    public KwetterGroup() {
+    }
+
+    public KwetterGroup(String name) {
+        this.groupname = name;
+        this.users = new ArrayList<KwetterUser>();
+    }
 
     public List<KwetterUser> getUsers() {
         return users;
@@ -44,10 +53,14 @@ public class Group implements Serializable
     }
 
     public String getGroupName() {
-        return groupName;
+        return groupname;
     }
 
     public void setGroupName(String groupName) {
-        this.groupName = groupName;
+        this.groupname = groupName;
+    }
+
+    public void addUser(KwetterUser user) {
+        this.users.add(user);
     }
 }
