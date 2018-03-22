@@ -30,7 +30,8 @@ import javax.persistence.TemporalType;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Tweet.allTweets", query = "SELECT t FROM Tweet t"),
-    @NamedQuery(name = "Tweet.getTweet", query = "SELECT t FROM Tweet t WHERE t.id LIKE :id")
+    @NamedQuery(name = "Tweet.getTweet", query = "SELECT t FROM Tweet t WHERE t.id LIKE :id"),
+    @NamedQuery(name = "Tweet.deleteTweet", query = "DELETE FROM Tweet t WHERE t.id = :id")
 })
 public class Tweet implements Serializable {
 
@@ -42,7 +43,7 @@ public class Tweet implements Serializable {
     @ManyToOne
     private KwetterUser owner;
 
-    private String content;
+    public String content;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;

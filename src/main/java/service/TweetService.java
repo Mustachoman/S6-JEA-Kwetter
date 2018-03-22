@@ -41,4 +41,8 @@ public class TweetService {
     {
         tweetDao.update(updatedTweet);
     }
+     public void deleteTweet(long id)
+    {
+        tweetDao.delete(id);
+    }
 }
