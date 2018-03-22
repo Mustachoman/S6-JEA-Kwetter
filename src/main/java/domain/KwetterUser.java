@@ -6,6 +6,8 @@
 package domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import util.Hasher;
 
 /**
  *
@@ -80,10 +83,10 @@ public class KwetterUser implements Serializable {
         this.postedTweets = new ArrayList<Tweet>();
     }
     
-    public KwetterUser(String name, String username) {
-        this.name = name;
+    public KwetterUser(String username, String password){
         this.username = username;
-
+        this.password = Hasher.HashString(password);
+        
         this.following = new ArrayList<KwetterUser>();
         this.followers = new ArrayList<KwetterUser>();
         this.postedTweets = new ArrayList<Tweet>();

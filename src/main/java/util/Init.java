@@ -10,6 +10,8 @@ import dao.UserDao;
 import domain.KwetterUser;
 import domain.KwetterGroup;
 import domain.Tweet;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -30,10 +32,10 @@ public class Init {
     TweetDao tweetDao;
     
     @PostConstruct
-    public void init() {
+    public void init(){
         System.out.println("init");
-        KwetterUser marijn = new KwetterUser("Marijn", "Spamturtle");
-        KwetterUser roy = new KwetterUser("Roy", "DaCowGoesMoo");
+        KwetterUser marijn = new KwetterUser("Marijn", "Dirk");
+        KwetterUser roy = new KwetterUser("Roy", "Egbert");
         KwetterGroup group = new KwetterGroup("admin");
         group.addUser(marijn);
         userDao.newGroup(group);
