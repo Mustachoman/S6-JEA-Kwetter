@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -79,7 +80,7 @@ public class KwetterUser implements Serializable {
     @ManyToMany
     private List<KwetterUser> following;
 
-    @OneToMany
+    @OneToMany(mappedBy="owner")
     private List<Tweet> postedTweets;
 
     public List<Tweet> getPostedTweets() {

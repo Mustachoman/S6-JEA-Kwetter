@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head></h:head>
+    <h:body>
+
+        <h1>Test</h1>
+        <h:form>
+            <h:outputText value="username " />
+            <br></br>
+            <p:inputText id="username" value="#{indexController.username}"/>
+            <br></br>
+            <h:outputText value="password "/>
+            <br></br>
+            <p:password id="password" feedback="true" value="#{indexController.password}"/>
+            <br></br>
+            <p:commandButton id="submit" actionListener="#{indexController.buttonAction()}" styleClass="ui-priority-primary" value="Submit"/>
+
+        </h:form>
+
+
+
+        <p:orderList id="tweet" value="#{indexController.tweets}" 
+                     var="tweet" itemValue="#{tweet}"
+                     controlsLocation="hidden">
+            <p:column>
+                <h:outputText value="#{tweet.id}:#{tweet.content}"/>
+            </p:column>
+            <p:column style="width: 4%">
+                <p:commandButton icon="ui-icon-close" actionListener="#{indexController.deleteTweet()}">
+                    <f:param name="content" value="#{tweet.id}" />
+                </p:commandButton>
+            </p:column>
+        </p:orderList>
+
+    </h:body>
+</html>

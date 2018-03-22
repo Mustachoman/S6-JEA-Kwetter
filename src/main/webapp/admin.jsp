@@ -6,12 +6,17 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+
+        <h1>Test</h1>
+        <p:button outcome="productDetail" value="Bookmark">
+            <f:param name="productId" value="10" />
+        </p:button>
+    </h:body>
 </html>
+

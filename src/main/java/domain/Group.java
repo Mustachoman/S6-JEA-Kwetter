@@ -20,18 +20,18 @@ import javax.persistence.Table;
  *
  * @author roy_s
  */
-@Entity
-@Table(name = "UserGroup")
+//@Entity
+//@Table(name = "UserGroup")
 public class Group implements Serializable
 {
-    @Id
+//    @Id
     private String groupName;
-    @ManyToMany
-    @JoinTable(name="USER_GROUP",
-    joinColumns = @JoinColumn(name = "groupName", 
-        referencedColumnName = "groupName"), 
-    inverseJoinColumns = @JoinColumn(name = "userName", 
-        referencedColumnName = "userName"))
+//    @ManyToMany
+//    @JoinTable(name="USER_GROUP",
+//    joinColumns = @JoinColumn(name = "groupName", 
+//        referencedColumnName = "groupName"), 
+//    inverseJoinColumns = @JoinColumn(name = "userName", 
+//        referencedColumnName = "userName"))
     private List<KwetterUser> users;
     // getters, setters, no‐arg constructor
 
