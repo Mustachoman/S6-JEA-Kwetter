@@ -6,9 +6,12 @@
 package domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +20,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import util.Hasher;
 
 /**
  *
@@ -28,31 +33,6 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "KwetterUser.getUser", query = "SELECT u FROM KwetterUser u WHERE u.id LIKE :id")
 })
 public class KwetterUser implements Serializable {
-    
-    //Default constructor
-    public KwetterUser(){}
-    
-    public KwetterUser(String name, String username, String photo, String bio, String location, String website ) {
-        this.name = name;
-        this.username = username;
-        this.photo = photo;
-        this.bio = bio;
-        this.location = location;
-        this.website = website;
-
-        this.following = new ArrayList<KwetterUser>();
-        this.followers = new ArrayList<KwetterUser>();
-        this.postedTweets = new ArrayList<Tweet>();
-    }
-    
-    public KwetterUser(String name, String username) {
-        this.name = name;
-        this.username = username;
-
-        this.following = new ArrayList<KwetterUser>();
-        this.followers = new ArrayList<KwetterUser>();
-        this.postedTweets = new ArrayList<Tweet>();
-    }
     
     private static final long serialVersionUID = 1L;
     
@@ -66,6 +46,8 @@ public class KwetterUser implements Serializable {
     private String bio;
     private String location;
     private String website;
+
+    private String password;
     
     /**
      * The users that follow you
@@ -79,8 +61,37 @@ public class KwetterUser implements Serializable {
     @ManyToMany
     private List<KwetterUser> following;
 
-    @OneToMany
+    @OneToMany(mappedBy="owner")
     private List<Tweet> postedTweets;
+    
+    @ManyToMany(mappedBy = "users")
+    private List<KwetterGroup> groups;
+    
+    //Default constructor
+    public KwetterUser(){}
+    
+    public KwetterUser(String name, String username, String photo, String bio, String location, String website ) {
+        this.name = name;
+        this.username = username;
+        this.photo = photo;
+        this.bio = bio;
+        this.location = location;
+        this.website = website;
+        
+
+        this.following = new ArrayList<KwetterUser>();
+        this.followers = new ArrayList<KwetterUser>();
+        this.postedTweets = new ArrayList<Tweet>();
+    }
+    
+    public KwetterUser(String username, String password){
+        this.username = username;
+        this.password = Hasher.HashString(password);
+        
+        this.following = new ArrayList<KwetterUser>();
+        this.followers = new ArrayList<KwetterUser>();
+        this.postedTweets = new ArrayList<Tweet>();
+    }
 
     public List<Tweet> getPostedTweets() {
         return postedTweets;

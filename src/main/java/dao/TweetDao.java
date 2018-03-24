@@ -18,24 +18,28 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TweetDao {
-    
-    @PersistenceContext(unitName="KwetterPU")
+
+    @PersistenceContext(unitName = "KwetterPU")
     EntityManager em;
-    
-    public List<Tweet> getAllTweets(){
+
+    public List<Tweet> getAllTweets() {
         return em.createNamedQuery("Tweet.allTweets").getResultList();
     }
-    
-    public void save(Tweet t){
+
+    public void save(Tweet t) {
         em.persist(t);
     }
-    
-    public Tweet findTweet(Long id){
+
+    public Tweet findTweet(Long id) {
         return em.find(Tweet.class, id);
     }
-    
-    public void update(Tweet t)
-    {
+
+    public void update(Tweet t) {
         em.merge(t);
+    }
+
+    public void delete(long id) {
+
+        em.createNamedQuery("Tweet.deleteTweet").setParameter("id", id).executeUpdate();
     }
 }
