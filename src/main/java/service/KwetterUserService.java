@@ -6,6 +6,7 @@
 package service;
 
 import dao.UserDao;
+import domain.KwetterGroup;
 import domain.KwetterUser;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -37,5 +38,11 @@ public class KwetterUserService {
     
     public KwetterUser newUser(KwetterUser newUser){
         return kwetterUserDao.newUser(newUser);
+    }
+    public KwetterGroup addToGroup(KwetterGroup g,KwetterUser u ){
+        return(kwetterUserDao.addUserToGroup(g, u));
+    }
+    public KwetterGroup findGroup(KwetterGroup g){
+        return(kwetterUserDao.findGroup(g));
     }
 }

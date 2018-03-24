@@ -12,17 +12,18 @@ and open the template in the editor.
     <h:head></h:head>
     <h:body>
 
-        <h1>Admin panel</h1>
+        <h1>UserList</h1>
 
-        <p:orderList id="tweet" value="#{indexController.tweets}" 
-                     var="tweet" itemValue="#{tweet}"
+        <p:orderList id="user" value="#{userListController.users}" 
+                     var="user" itemValue="#{user}"
                      controlsLocation="hidden">
             <p:column>
-                <h:outputText value="#{tweet.id}:#{tweet.content}"/>
+                <h:outputText value="#{user.id}:#{user.username}"/>
             </p:column>
             <p:column style="width: 4%">
-                <p:button onclick="#{indexController.deleteTweet()}" value="Delete" >
-                    <f:param name="content" value="#{tweet.id}" />
+             
+                <p:button onclick="#{userListController.grantPrivilege()}" value="Give Admin" >
+                    <f:param name="content" value="#{user.id}" />
                 </p:button>
             </p:column>
         </p:orderList>

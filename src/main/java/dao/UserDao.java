@@ -24,6 +24,8 @@ public class UserDao {
 
     public List<KwetterUser> getAllUsers() {
         return em.createNamedQuery("KwetterUser.allUsers").getResultList();
+        
+        
     }
 
     public KwetterUser newUser(KwetterUser newKwetterUser) {
@@ -44,4 +46,15 @@ public class UserDao {
         em.persist(group);
         return group;
     }
+    public KwetterGroup addUserToGroup(KwetterGroup group,KwetterUser u)
+    {
+        group.addUser(u);
+        em.merge(group);
+        return group;
+    }
+    public KwetterGroup findGroup(KwetterGroup group){
+        return em.find(KwetterGroup.class,group.getGroupName());
+    }
+    
+    
 }
