@@ -41,7 +41,6 @@ public class Init {
         userDao.newGroup(group);
         userDao.newUser(marijn);
         userDao.newUser(roy);
-        //userDao.addUserToGroup(group, roy);
         Tweet tweet = roy.postTweet("Dit is een tweet");
         tweet.heartTweet(marijn);
         tweet.mentionUser(marijn);

@@ -86,11 +86,6 @@ public class IndexController implements Serializable {
         this.tweets = tweets;
     }
 
-    public void buttonAction() {
-        username = password;
-
-    }
-
     public void deleteTweet() {
         String content = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("content");
         for (Tweet t : tweets) {

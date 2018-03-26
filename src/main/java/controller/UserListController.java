@@ -87,11 +87,6 @@ public class UserListController implements Serializable {
         this.tweets = tweets;
     }
 
-    public void buttonAction() {
-        username = password;
-
-    }
-
     public String getGroup(String id) {
         KwetterGroup g = new KwetterGroup("admin");
         g = kwetterUserService.findGroup(g);
