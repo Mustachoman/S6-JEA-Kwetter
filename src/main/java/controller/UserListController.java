@@ -92,18 +92,30 @@ public class UserListController implements Serializable {
 
     }
 
+    public String getGroup(String id) {
+        KwetterGroup g = new KwetterGroup("admin");
+        g = kwetterUserService.findGroup(g);
+        for (KwetterUser u : users) {
+            if (u.getId().toString().equals(id)) {
+                if (g.getUsers().contains(u)) {
+                    return "Admin";
+                }
+
+            }
+        }
+        return "User";
+    }
+
     public void grantPrivilege() {
         KwetterGroup g = new KwetterGroup("admin");
         g = kwetterUserService.findGroup(g);
         String content = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("content");
         for (KwetterUser u : users) {
-            if(u.getId().toString().equals(content))
-            {
-                if(!g.getUsers().contains(u))
-                {
+            if (u.getId().toString().equals(content)) {
+                if (!g.getUsers().contains(u)) {
                     kwetterUserService.addToGroup(g, u);
                 }
-                
+
             }
         }
     }

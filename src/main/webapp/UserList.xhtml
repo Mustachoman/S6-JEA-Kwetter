@@ -18,7 +18,7 @@ and open the template in the editor.
                      var="user" itemValue="#{user}"
                      controlsLocation="hidden">
             <p:column>
-                <h:outputText value="#{user.id}:#{user.username}"/>
+                <h:outputText value="#{user.id}:#{user.username} Role:#{userListController.getGroup(user.id)}"/>
             </p:column>
             <p:column style="width: 4%">
              
