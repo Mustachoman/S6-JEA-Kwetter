@@ -1,6 +1,7 @@
 package util;
 
 import domain.KwetterUser;
+import domain.Tweet;
 import java.sql.SQLException;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
@@ -9,7 +10,7 @@ import javax.persistence.metamodel.EntityType;
 public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
-        KwetterUser.class
+        Tweet.class
     };
     private final EntityManager em;
 
@@ -19,7 +20,7 @@ public class DatabaseCleaner {
 
     public void clean() throws SQLException {
         em.getTransaction().begin();
-
+        
         
         for (Class<?> entityType : ENTITY_TYPES) {
             deleteEntities(entityType);

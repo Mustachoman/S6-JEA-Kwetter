@@ -69,11 +69,11 @@ public class UserToTweetTest {
     
     @Before
     public void setUp() {
-//        try {
-//            new DatabaseCleaner(emf.createEntityManager()).clean();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KwetterUserTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            new DatabaseCleaner(emf.createEntityManager()).clean();
+        } catch (SQLException ex) {
+            Logger.getLogger(KwetterUserTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         em = emf.createEntityManager();
         tx = em.getTransaction();
