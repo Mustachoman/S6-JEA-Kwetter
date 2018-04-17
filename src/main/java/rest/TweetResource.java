@@ -45,7 +45,7 @@ public class TweetResource {
     KwetterUserService kwetterUserService;
 
     @GET
-    @Path("")
+    @Path("/")
     public List<TweetDTO> allTweets() {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();

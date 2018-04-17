@@ -8,6 +8,7 @@ package rest;
 import domain.KwetterUser;
 import dto.KwetterUserDTO;
 import dto.KwetterUserDTOMapper;
+import filter.JWTTokenNeeded;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,13 +34,24 @@ public class KwetterUserResource {
     KwetterUserService kwetterUserService;
 
     @GET
-    @Path("")
+    @Path("/")
     public List<KwetterUserDTO> allUsers() {
         List<KwetterUser> users = kwetterUserService.allUsers();
         List<KwetterUserDTO> usersDTO = new ArrayList<>();
         users.forEach(user -> usersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
         return usersDTO;
     }
+    
+    @GET
+    @JWTTokenNeeded    
+    @Path("/secure")
+    public List<KwetterUserDTO> getMe() {
+        List<KwetterUser> users = kwetterUserService.allUsers();
+        List<KwetterUserDTO> usersDTO = new ArrayList<>();
+        users.forEach(user -> usersDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
+        return usersDTO;
+    }
+    
 
     @GET
     @Path("{id}")

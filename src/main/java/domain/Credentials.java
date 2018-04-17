@@ -19,6 +19,8 @@ public class Credentials implements Serializable {
         this.username = username;
         this.password = password;
     }
+    
+    public Credentials(){}
 
     public String getUsername() {
         return username;

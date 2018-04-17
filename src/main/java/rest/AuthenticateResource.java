@@ -6,50 +6,80 @@
 package rest;
 
 import domain.Credentials;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.crypto.spec.SecretKeySpec;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import javax.ws.rs.core.MediaType;
+import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import javax.ws.rs.core.Response;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import javax.ws.rs.core.UriInfo;
+import service.KwetterUserService;
+import util.KeyGenerator;
 
 /**
  *
  * @author Marijn
  */
 @Path("/authentication")
+@Stateless
 public class AuthenticateResource {
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response authenticateUser(Credentials credentials) {
+    @Context
+    private UriInfo uriInfo;
 
+    @Inject
+    KwetterUserService kwetterUserService;
+
+    @POST
+    public Response authenticateUser(Credentials credentials) {
         try {
             // Authenticate the user using the credentials provided
-            authenticate(credentials.getUsername(), credentials.getPassword());
-
+            authenticate(credentials.getUsername(),credentials.getPassword());
+ 
             // Issue a token for the user
             String token = issueToken(credentials.getUsername());
-
+ 
             // Return the token on the response
-            return Response.ok(token).build();
-
+            return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
+ 
         } catch (Exception e) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }      
+            return Response.status(UNAUTHORIZED).build();
+        }
     }
 
     private void authenticate(String username, String password) throws Exception {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
+        kwetterUserService.authenticateUser(username, password);
     }
 
-    private String issueToken(String username) {
-        return null;
-        // Issue a token (can be a random String persisted to a database or a JWT token)
-        // The issued token must be associated to a user
-        // Return the issued token
+    private String issueToken(String login) {
+        Key key = KeyGenerator.generateKey();
+        String jwtToken = Jwts.builder()
+                .setSubject(login)
+                .setIssuer(uriInfo.getAbsolutePath().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
+                .signWith(SignatureAlgorithm.HS512, key)
+                .compact();
+        return jwtToken;
+    }
+
+    private Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
