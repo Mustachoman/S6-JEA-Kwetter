@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class TweetDao {
 
-    @PersistenceContext(unitName = "KwetterPU")
+    @PersistenceContext
     EntityManager em;
 
     public List<Tweet> getAllTweets() {

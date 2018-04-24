@@ -29,13 +29,16 @@ import util.Hasher;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u"),
+    @NamedQuery(name = "KwetterUser.allUsers", query = "SELECT u FROM KwetterUser u")
+    ,
     @NamedQuery(name = "KwetterUser.getUser", query = "SELECT u FROM KwetterUser u WHERE u.id LIKE :id")
+    ,
+    @NamedQuery(name = "KwetterUser.getUserByUsername", query = "SELECT u FROM KwetterUser u WHERE u.username LIKE :username")
 })
 public class KwetterUser implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -48,46 +51,46 @@ public class KwetterUser implements Serializable {
     private String website;
 
     private String password;
-    
+
     /**
      * The users that follow you
      */
-    @ManyToMany(mappedBy="following")
+    @ManyToMany(mappedBy = "following")
     private List<KwetterUser> followers;
-    
+
     /**
      * The users that you follow
      */
     @ManyToMany
     private List<KwetterUser> following;
 
-    @OneToMany(mappedBy="owner")
+    @OneToMany(mappedBy = "owner")
     private List<Tweet> postedTweets;
-    
+
     @ManyToMany(mappedBy = "users")
     private List<KwetterGroup> groups;
-    
+
     //Default constructor
-    public KwetterUser(){}
-    
-    public KwetterUser(String name, String username, String photo, String bio, String location, String website ) {
+    public KwetterUser() {
+    }
+
+    public KwetterUser(String name, String username, String photo, String bio, String location, String website) {
         this.name = name;
         this.username = username;
         this.photo = photo;
         this.bio = bio;
         this.location = location;
         this.website = website;
-        
 
         this.following = new ArrayList<KwetterUser>();
         this.followers = new ArrayList<KwetterUser>();
         this.postedTweets = new ArrayList<Tweet>();
     }
-    
-    public KwetterUser(String username, String password){
+
+    public KwetterUser(String username, String password) {
         this.username = username;
         this.password = Hasher.HashString(password);
-        
+
         this.following = new ArrayList<KwetterUser>();
         this.followers = new ArrayList<KwetterUser>();
         this.postedTweets = new ArrayList<Tweet>();
@@ -100,21 +103,33 @@ public class KwetterUser implements Serializable {
     public void setPostedTweets(List<Tweet> postedTweets) {
         this.postedTweets = postedTweets;
     }
-    
-    public Tweet postTweet(String content)
-    {
-        if (content.length() > 140)
-        {
-            throw new IllegalArgumentException("Character limit cannot exceed 140.");           
-        }
-        else{
+
+    public Tweet postTweet(String content) {
+        if (content.length() > 140) {
+            throw new IllegalArgumentException("Character limit cannot exceed 140.");
+        } else {
             Date date = new Date();
-            Tweet newTweet = new Tweet(this,content,date);
+            Tweet newTweet = new Tweet(this, content, date);
             postedTweets.add(newTweet);
             return newTweet;
         }
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<KwetterGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<KwetterGroup> groups) {
+        this.groups = groups;
+    }
 
     /**
      * Get the value of following
@@ -133,7 +148,7 @@ public class KwetterUser implements Serializable {
     public void setFollowing(List<KwetterUser> following) {
         this.following = following;
     }
-    
+
     public List<KwetterUser> getFollowers() {
         return followers;
     }
@@ -141,7 +156,6 @@ public class KwetterUser implements Serializable {
     public void setFollowers(List<KwetterUser> followers) {
         this.followers = followers;
     }
-
 
     /**
      * Get the value of website
@@ -179,7 +193,6 @@ public class KwetterUser implements Serializable {
         this.location = location;
     }
 
-
     /**
      * Get the value of bio
      *
@@ -198,7 +211,6 @@ public class KwetterUser implements Serializable {
         this.bio = bio;
     }
 
-
     /**
      * Get the value of photo
      *
@@ -216,7 +228,6 @@ public class KwetterUser implements Serializable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
-
 
     /**
      * Get the value of username
@@ -286,21 +297,21 @@ public class KwetterUser implements Serializable {
     public String toString() {
         return "domain.User[ id=" + id + " ]";
     }
-    
-    public boolean followUser(KwetterUser following){
+
+    public boolean followUser(KwetterUser following) {
         if (!this.following.contains(following)) {
             return this.following.add(following);
+        } else {
+            return false;
         }
-        else return false;
     }
-    
-    public boolean unfollowUser(KwetterUser following){
+
+    public boolean unfollowUser(KwetterUser following) {
         if (this.following.contains(following)) {
             return this.following.remove(following);
+        } else {
+            return false;
         }
-        else return false;
     }
-    
-  
-    
+
 }

@@ -46,7 +46,7 @@ public class TweetResource {
     KwetterUserService kwetterUserService;
 
     @GET
-    @Path("")
+    @Path("/")
     public List<TweetDTO> allTweets() {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();
@@ -124,20 +124,10 @@ public class TweetResource {
         return new TweetDTOMapper().mapTweets(tweetToHeart);
     }
 
-//    @GET
-//    @Path("{id}/following")
-//    public List<KwetterUserDTO> userFollowing(@PathParam("id") Long id) {
-//        KwetterUser foundUser = kwetterUserService.findUser(id);
-//        List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
-//        List<KwetterUserDTO> foundUserFollowingDTO = new ArrayList<>();
-//        foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
-//        return foundUserFollowingDTO;
-//    }
     
     @DELETE
     @Path("{id}")
     public void deleteTweet(@PathParam("id") Long id) {
-        
         tweetService.deleteTweet(id);
         
     }

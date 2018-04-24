@@ -11,6 +11,7 @@ import domain.KwetterUser;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import util.Hasher;
 
 /**
  *
@@ -32,6 +33,10 @@ public class KwetterUserService {
         return kwetterUserDao.findUser(id);
     }
     
+    public KwetterUser findUserByUsername(String username){
+        return kwetterUserDao.findUserByUsername(username);
+    }
+    
     public KwetterUser updateUser(KwetterUser newUser){
         return kwetterUserDao.updateUser(newUser);
     }
@@ -44,5 +49,17 @@ public class KwetterUserService {
     }
     public KwetterGroup findGroup(KwetterGroup g){
         return(kwetterUserDao.findGroup(g));
+    }
+    public KwetterUser authenticateUser(String username, String password) throws Exception{
+        KwetterUser foundKwetterUser = findUserByUsername(username);
+        if (foundKwetterUser != null){
+            String foundPassword = foundKwetterUser.getPassword();
+            String givenPassword = Hasher.HashString(password);
+            if (foundPassword == null ? givenPassword == null : foundPassword.equals(givenPassword)){
+                return foundKwetterUser;
+            }
+            throw new Exception("Password incorrect");
+        }
+        throw new Exception("User not found");
     }
 }

@@ -5,6 +5,7 @@
  */
 package rest;
 
+import filter.JWTTokenNeededFilter;
 import filter.NewCrossOriginResourceSharingFilter;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,12 +26,21 @@ public class JAXRSconfig extends Application {
 
         c.add(KwetterUserResource.class);
         c.add(TweetResource.class);
+        c.add(AuthenticateResource.class);
+        c.add(EchoEndpoint.class);
         c.add(NewCrossOriginResourceSharingFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 
     @Override
     public Set<Class<?>> getClasses() {
-        return classes;
+        HashSet<Class<?>> c = new HashSet<>();
+
+        c.add(KwetterUserResource.class);
+        c.add(TweetResource.class);
+        c.add(AuthenticateResource.class);
+        c.add(EchoEndpoint.class);
+        c.add(JWTTokenNeededFilter.class);
+        return c;
     }
 }

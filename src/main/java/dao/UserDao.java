@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserDao {
 
-    @PersistenceContext(unitName = "KwetterPU")
+    @PersistenceContext
     EntityManager em;
 
     public List<KwetterUser> getAllUsers() {
@@ -35,6 +35,10 @@ public class UserDao {
 
     public KwetterUser findUser(Long id) {
         return em.find(KwetterUser.class, id);
+    }
+    
+    public KwetterUser findUserByUsername(String username){
+        return (KwetterUser) em.createNamedQuery("KwetterUser.getUserByUsername").setParameter("username", username).getResultList().get(0);
     }
 
     public KwetterUser updateUser(KwetterUser updatedKwetterUser) {
