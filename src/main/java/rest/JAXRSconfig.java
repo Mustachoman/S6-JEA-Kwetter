@@ -5,6 +5,7 @@
  */
 package rest;
 
+import filter.NewCrossOriginResourceSharingFilter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class JAXRSconfig extends Application {
 
         c.add(KwetterUserResource.class);
         c.add(TweetResource.class);
-
+        c.add(NewCrossOriginResourceSharingFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -51,6 +52,7 @@ public class TweetResource {
         List<TweetDTO> tweetDTO = new ArrayList<>();
         tweets.forEach(tweet -> tweetDTO.add(new TweetDTOMapper().mapTweets(tweet)));
         return tweetDTO;
+        
     }
     
     @GET
@@ -60,6 +62,18 @@ public class TweetResource {
         List<TweetDTO> tweetDTO = new ArrayList<>();
         
         tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), id))).forEachOrdered((tweet) -> {
+            tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
+        });
+       
+        return tweetDTO;
+    }
+    @GET
+    @Path("allTweetsUsername/{username}")
+    public List<TweetDTO> allTweetsFromUsername(@PathParam("username") String username) {
+        List<Tweet> tweets = tweetService.allTweets();
+        List<TweetDTO> tweetDTO = new ArrayList<>();
+        
+        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getUsername(), username))).forEachOrdered((tweet) -> {
             tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
         });
        
@@ -120,6 +134,12 @@ public class TweetResource {
 //        return foundUserFollowingDTO;
 //    }
     
-    
+    @DELETE
+    @Path("{id}")
+    public void deleteTweet(@PathParam("id") Long id) {
+        
+        tweetService.deleteTweet(id);
+        
+    }
 
 }
