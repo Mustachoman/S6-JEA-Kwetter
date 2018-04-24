@@ -21,7 +21,7 @@ public class TweetDTOMapper {
     public TweetDTO mapTweets(Tweet tweetToMap) {
         KwetterUser o=tweetToMap.getOwner();
         KwetterUserDTO kwetterUserDTO = new KwetterUserDTO(o.getId(),o.getName(),o.getUsername(),o.getPhoto(),o.getBio(),o.getLocation(),o.getWebsite());
-        return new TweetDTO(kwetterUserDTO.getId(),kwetterUserDTO,
+        return new TweetDTO(tweetToMap.getId(),kwetterUserDTO,
                 tweetToMap.getContent(),
                 tweetToMap.getDate());
     }

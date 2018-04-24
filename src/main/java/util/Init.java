@@ -42,9 +42,12 @@ public class Init {
         userDao.newUser(marijn);
         userDao.newUser(roy);
         Tweet tweet = roy.postTweet("Dit is een tweet");
+        Tweet tweet2 = marijn.postTweet("Dit is een tweet2");
+        Tweet tweet3 = marijn.postTweet("Was dit maar een tweet");
         tweet.heartTweet(marijn);
         tweet.mentionUser(marijn);
         tweetDao.save(tweet);
-
+        tweetDao.save(tweet2);
+        tweetDao.save(tweet3);
     }
 }

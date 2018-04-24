@@ -6,6 +6,7 @@
 package rest;
 
 import filter.JWTTokenNeededFilter;
+import filter.NewCrossOriginResourceSharingFilter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class JAXRSconfig extends Application {
         c.add(TweetResource.class);
         c.add(AuthenticateResource.class);
         c.add(EchoEndpoint.class);
-
+        c.add(NewCrossOriginResourceSharingFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 
