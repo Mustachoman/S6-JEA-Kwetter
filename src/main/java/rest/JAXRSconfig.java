@@ -28,6 +28,7 @@ public class JAXRSconfig extends Application {
         c.add(TweetResource.class);
         c.add(AuthenticateResource.class);
         c.add(EchoEndpoint.class);
+        c.add(JWTTokenNeededFilter.class);
         c.add(NewCrossOriginResourceSharingFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
@@ -41,6 +42,7 @@ public class JAXRSconfig extends Application {
         c.add(AuthenticateResource.class);
         c.add(EchoEndpoint.class);
         c.add(JWTTokenNeededFilter.class);
+        c.add(NewCrossOriginResourceSharingFilter.class);
         return c;
     }
 }

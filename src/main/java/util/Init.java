@@ -36,11 +36,11 @@ public class Init {
         System.out.println("init");
         KwetterUser marijn = new KwetterUser("Marijn", "Dirk");
         KwetterUser roy = new KwetterUser("Roy", "Egbert");
-        KwetterGroup group = new KwetterGroup("admin");
-        group.addUser(marijn);
-        userDao.newGroup(group);
+        KwetterGroup group = new KwetterGroup("admin");   
         userDao.newUser(marijn);
         userDao.newUser(roy);
+        group.addUser(marijn);
+        userDao.newGroup(group);
         Tweet tweet = roy.postTweet("Dit is een tweet");
         Tweet tweet2 = marijn.postTweet("Dit is een tweet2");
         Tweet tweet3 = marijn.postTweet("Was dit maar een tweet");
