@@ -12,18 +12,13 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import javax.ws.rs.core.MediaType;
-import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import javax.ws.rs.core.UriInfo;
@@ -48,14 +43,18 @@ public class AuthenticateResource {
     public Response authenticateUser(Credentials credentials) {
         try {
             // Authenticate the user using the credentials provided
-            authenticate(credentials.getUsername(),credentials.getPassword());
- 
+            authenticate(credentials.getUsername(), credentials.getPassword());
+
             // Issue a token for the user
             String token = issueToken(credentials.getUsername());
- 
+
+            HashMap userToken = new HashMap();
+            userToken.put("username", credentials.getUsername());
+            userToken.put("AuthToken", token);
+
             // Return the token on the response
-            return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
- 
+            return Response.ok(userToken).header(AUTHORIZATION, "Bearer " + token).build();
+
         } catch (Exception e) {
             return Response.status(UNAUTHORIZED).build();
         }

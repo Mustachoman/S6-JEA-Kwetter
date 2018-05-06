@@ -29,18 +29,12 @@ public class JAXRSconfig extends Application {
         c.add(AuthenticateResource.class);
         c.add(EchoEndpoint.class);
         c.add(NewCrossOriginResourceSharingFilter.class);
+        c.add(JWTTokenNeededFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 
     @Override
     public Set<Class<?>> getClasses() {
-        HashSet<Class<?>> c = new HashSet<>();
-
-        c.add(KwetterUserResource.class);
-        c.add(TweetResource.class);
-        c.add(AuthenticateResource.class);
-        c.add(EchoEndpoint.class);
-        c.add(JWTTokenNeededFilter.class);
-        return c;
+        return classes;
     }
 }
