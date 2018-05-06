@@ -15,18 +15,17 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
  *         --
  */
 @Path("/echo")
-@Produces(TEXT_PLAIN)
 public class EchoEndpoint {
 
     @GET
     public Response echo(@QueryParam("message") String message) {
-        return Response.ok().entity(message == null ? "no message" : message).build();
+        return Response.ok(message == null ? "no message" : message).build();
     }
 
     @JWTTokenNeeded
     @GET
     @Path("jwt")
     public Response echoWithJWTToken(@QueryParam("message") String message) {
-        return Response.ok().entity(message == null ? "no message" : message).build();
+        return Response.ok(message == null ? "no message" : message).build();
     }
 }
