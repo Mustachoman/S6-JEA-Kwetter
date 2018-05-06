@@ -30,11 +30,13 @@ public class JAXRSconfig extends Application {
         c.add(EchoEndpoint.class);
         c.add(JWTTokenNeededFilter.class);
         c.add(NewCrossOriginResourceSharingFilter.class);
+        c.add(JWTTokenNeededFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 
     @Override
     public Set<Class<?>> getClasses() {
+
         HashSet<Class<?>> c = new HashSet<>();
 
         c.add(KwetterUserResource.class);
@@ -43,6 +45,8 @@ public class JAXRSconfig extends Application {
         c.add(EchoEndpoint.class);
         c.add(JWTTokenNeededFilter.class);
         c.add(NewCrossOriginResourceSharingFilter.class);
-        return c;
+
+        return classes;
+
     }
 }
