@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import service.KwetterUserService;
 import service.TweetService;
 
@@ -102,16 +103,15 @@ public class TweetResource {
     
     @POST
     @Path("post")
-    public void postTweet(TweetDTO tweet) {
+    public Response postTweet(TweetDTO tweet) {
         Date date = new Date();
         TweetDTO newTweetDTO = tweet;
         KwetterUserDTO tweetOwnerDTO = tweet.getOwner();
         KwetterUser tweetOwner = kwetterUserService.findUser(tweetOwnerDTO.getId());
         Tweet newTweet = new Tweet(tweetOwner,newTweetDTO.getContent(),date);
-        
-        
         tweetService.postTweet(newTweet);
         
+        return Response.ok(newTweetDTO).build();
     }
     @PUT
     @Path("heart/{id}")

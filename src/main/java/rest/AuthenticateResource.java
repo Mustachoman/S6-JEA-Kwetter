@@ -6,6 +6,7 @@
 package rest;
 
 import domain.Credentials;
+import domain.KwetterUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
@@ -47,10 +48,13 @@ public class AuthenticateResource {
 
             // Issue a token for the user
             String token = issueToken(credentials.getUsername());
-
+            
+            KwetterUser user = kwetterUserService.findUserByUsername(credentials.getUsername());
+            
             HashMap userToken = new HashMap();
             userToken.put("username", credentials.getUsername());
             userToken.put("AuthToken", token);
+            userToken.put("userId", user.getId());
 
             // Return the token on the response
             return Response.ok(userToken).header(AUTHORIZATION, "Bearer " + token).build();
