@@ -49,5 +49,7 @@ public class Init {
         tweetDao.save(tweet);
         tweetDao.save(tweet2);
         tweetDao.save(tweet3);
+        roy.followUser(marijn);
+        userDao.updateUser(roy);
     }
 }

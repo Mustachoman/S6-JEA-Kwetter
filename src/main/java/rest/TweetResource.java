@@ -12,6 +12,8 @@ import dto.KwetterUserDTOMapper;
 import dto.TweetDTO;
 import dto.TweetDTOMapper;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -134,15 +136,24 @@ public class TweetResource {
     
     @GET
     @Path("timeline/{id}")
-    public List<TweetDTO> getTweetsFromFollowers(@PathParam("id") Long id) {
+    public Response getTweetsFromFollowers(@PathParam("id") Long id) {
         KwetterUser foundUser = kwetterUserService.findUser(id);
         List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
         List<Tweet> timeLineTweets = new ArrayList<>();
-        foundUserFollowing.forEach(user -> timeLineTweets.addAll(user.getPostedTweets()));
+        
+        timeLineTweets.addAll(tweetService.allTweetsFromUser(foundUser.getId()));
+        
+        foundUserFollowing.forEach(user -> {
+            timeLineTweets.addAll(tweetService.allTweetsFromUser(user.getId()));
+        });
+        
         List<TweetDTO> tweetDTO = new ArrayList<>();
         timeLineTweets.forEach(tweet -> tweetDTO.add(new TweetDTOMapper().mapTweets(tweet)));
         
-        return tweetDTO;
+        
+        //Order ze op Date
+        Collections.sort(tweetDTO, Comparator.comparing((tweet) -> tweet.getDate()));
+        
+        return Response.ok(tweetDTO).build();
     }
-
 }

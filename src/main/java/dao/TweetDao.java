@@ -25,6 +25,10 @@ public class TweetDao {
     public List<Tweet> getAllTweets() {
         return em.createNamedQuery("Tweet.allTweets").getResultList();
     }
+    
+    public List<Tweet> getAllTweetsFromOwner(long id) {
+        return em.createNamedQuery("Tweet.allTweetsFromUser").setParameter("ownerid", id).getResultList();
+    }
 
     public void save(Tweet t) {
         em.persist(t);
@@ -39,7 +43,6 @@ public class TweetDao {
     }
 
     public void delete(long id) {
-
         em.createNamedQuery("Tweet.deleteTweet").setParameter("id", id).executeUpdate();
     }
 }

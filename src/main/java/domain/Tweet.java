@@ -30,6 +30,7 @@ import javax.persistence.TemporalType;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Tweet.allTweets", query = "SELECT t FROM Tweet t"),
+    @NamedQuery(name = "Tweet.allTweetsFromUser", query = "SELECT t FROM Tweet t WHERE t.owner.id = :ownerid"),
     @NamedQuery(name = "Tweet.getTweet", query = "SELECT t FROM Tweet t WHERE t.id LIKE :id"),
     @NamedQuery(name = "Tweet.deleteTweet", query = "DELETE FROM Tweet t WHERE t.id = :id")
 })

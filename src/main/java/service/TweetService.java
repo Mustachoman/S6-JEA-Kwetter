@@ -28,6 +28,10 @@ public class TweetService {
     public List<Tweet> allTweets() {
         return tweetDao.getAllTweets();
     }
+    
+    public List<Tweet> allTweetsFromUser(Long userId) {
+        return tweetDao.getAllTweetsFromOwner(userId);
+    }
 
     public Tweet findTweet(Long id) {
         return tweetDao.findTweet(id);
@@ -45,4 +49,5 @@ public class TweetService {
     {
         tweetDao.delete(id);
     }
+     
 }
