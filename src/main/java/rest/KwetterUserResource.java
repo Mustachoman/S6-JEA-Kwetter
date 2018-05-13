@@ -61,6 +61,8 @@ public class KwetterUserResource {
         return foundUserDTO;
     }
 
+    
+
     @GET
     @Path("following/{id}")
     public List<KwetterUserDTO> userFollowing(@PathParam("id") Long id) {
@@ -70,10 +72,9 @@ public class KwetterUserResource {
         foundUserFollowing.forEach(user -> foundUserFollowingDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
         return foundUserFollowingDTO;
     }
-
     @GET
     @Path("followers/{id}")
-    public List<KwetterUserDTO> userFollowers(@PathParam("id") Long id) {
+    public List<KwetterUserDTO> getTweetsFromFollowers(@PathParam("id") Long id) {
         KwetterUser foundUser = kwetterUserService.findUser(id);
         List<KwetterUser> foundUserFollowers = foundUser.getFollowers();
         List<KwetterUserDTO> foundUserFollowersDTO = new ArrayList<>();

@@ -131,5 +131,18 @@ public class TweetResource {
         tweetService.deleteTweet(id);
         
     }
+    
+    @GET
+    @Path("timeline/{id}")
+    public List<TweetDTO> getTweetsFromFollowers(@PathParam("id") Long id) {
+        KwetterUser foundUser = kwetterUserService.findUser(id);
+        List<KwetterUser> foundUserFollowing = foundUser.getFollowing();
+        List<Tweet> timeLineTweets = new ArrayList<>();
+        foundUserFollowing.forEach(user -> timeLineTweets.addAll(user.getPostedTweets()));
+        List<TweetDTO> tweetDTO = new ArrayList<>();
+        timeLineTweets.forEach(tweet -> tweetDTO.add(new TweetDTOMapper().mapTweets(tweet)));
+        
+        return tweetDTO;
+    }
 
 }
