@@ -7,7 +7,6 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
-  <context-root>/JEA-Kwetter</context-root>
   <security-role-mapping>
     <role-name>admin_role</role-name>
     <group-name>admin</group-name>
