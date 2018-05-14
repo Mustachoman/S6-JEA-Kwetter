@@ -12,7 +12,7 @@ import dto.KwetterUserDTOMapper;
 import dto.TweetDTO;
 import dto.TweetDTOMapper;
 import java.util.ArrayList;
-import java.util.Collections;
+import static java.util.Collections.reverseOrder;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -152,7 +152,7 @@ public class TweetResource {
         
         
         //Order ze op Date
-        Collections.sort(tweetDTO, Comparator.comparing((tweet) -> tweet.getDate()));
+        tweetDTO.sort(reverseOrder(Comparator.comparing((tweet)->tweet.getDate())));
         
         return Response.ok(tweetDTO).build();
     }
