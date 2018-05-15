@@ -11,14 +11,19 @@ import dto.KwetterUserDTO;
 import dto.KwetterUserDTOMapper;
 import dto.TweetDTO;
 import dto.TweetDTOMapper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.websocket.EncodeException;
+import javax.websocket.Session;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -30,7 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.KwetterUserService;
 import service.TweetService;
-
+import static websockets.Endpoint.peers;
 
 
 
@@ -55,6 +60,7 @@ public class TweetResource {
         List<TweetDTO> tweetDTO = new ArrayList<>();
         tweets.forEach(tweet -> tweetDTO.add(new TweetDTOMapper().mapTweets(tweet)));
         return tweetDTO;
+        
         
     }
     
@@ -112,7 +118,13 @@ public class TweetResource {
         KwetterUser tweetOwner = kwetterUserService.findUser(tweetOwnerDTO.getId());
         Tweet newTweet = new Tweet(tweetOwner,newTweetDTO.getContent(),date);
         tweetService.postTweet(newTweet);
-        
+        try {
+            for (Session peer : peers) {
+                peer.getBasicRemote().sendObject(newTweetDTO);
+            }
+        } catch (IOException | EncodeException | NullPointerException ex) {
+            Logger.getLogger(KwetterUserResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return Response.ok(newTweetDTO).build();
     }
     @PUT
