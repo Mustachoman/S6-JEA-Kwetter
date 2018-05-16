@@ -20,11 +20,14 @@ public class KwetterUserDTO {
     private String bio;
     private String location;
     private String website;
+    private String uri;
+    private String followersUri;
+    private String followingUri;
     
-
+    public KwetterUserDTO() {
+    }
     
     public KwetterUserDTO(Long id, String name, String username, String photo, String bio, String location, String website) {
-
         this.id = id;
         this.name = name;
         this.username = username;
@@ -40,12 +43,7 @@ public class KwetterUserDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public KwetterUserDTO() {
-    }
-    
-    
+    }    
 
     public String getName() {
         return name;
@@ -93,6 +91,30 @@ public class KwetterUserDTO {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+    
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getFollowersUri() {
+        return followersUri;
+    }
+
+    public void setFollowersUri(String followersUri) {
+        this.followersUri = followersUri;
+    }
+
+    public String getFollowingUri() {
+        return followingUri;
+    }
+
+    public void setFollowingUri(String followingUri) {
+        this.followingUri = followingUri;
     }
     
 }

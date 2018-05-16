@@ -58,13 +58,14 @@ public class TweetResource {
         
     }
     
+    
     @GET
-    @Path("allTweets/{id}")
-    public List<TweetDTO> allTweetsFromUser(@PathParam("id") Long id) {
+    @Path("user/{userId}")
+    public List<TweetDTO> allTweetsFromUser(@PathParam("userId") Long userId) {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();
         
-        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), id))).forEachOrdered((tweet) -> {
+        tweets.stream().filter((tweet) -> (Objects.equals(tweet.getOwner().getId(), userId))).forEachOrdered((tweet) -> {
             tweetDTO.add(new TweetDTOMapper().mapTweets(tweet));
         });
        
@@ -84,25 +85,25 @@ public class TweetResource {
     }
 
     @GET
-    @Path("{id}")
+    @Path("{tweetId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TweetDTO getTweet(@PathParam("id") Long id) {
-        Tweet foundTweet = tweetService.findTweet(id);
+    public TweetDTO getTweet(@PathParam("tweetId") Long tweetId) {
+        Tweet foundTweet = tweetService.findTweet(tweetId);
         TweetDTO tweetDTO = new TweetDTOMapper().mapTweets(foundTweet);
         return tweetDTO;
     }
     
     @GET
-    @Path("allHearts/{id}")
+    @Path("{tweetId}/hearts")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<KwetterUserDTO> getHearts(@PathParam("id") Long id){
-        Tweet foundTweet = tweetService.findTweet(id);
+    public List<KwetterUserDTO> getHearts(@PathParam("tweetId") Long tweetId){
+        Tweet foundTweet = tweetService.findTweet(tweetId);
         List<KwetterUser> foundHearts = foundTweet.getHearts();
         List<KwetterUserDTO> foundHeartsDTO = new ArrayList<>();
         foundHearts.forEach(user -> foundHeartsDTO.add(new KwetterUserDTOMapper().mapKwetterUser(user)));
         return foundHeartsDTO;
     }
-    
+
     @POST
     @Path("post")
     public Response postTweet(TweetDTO tweet) {
@@ -115,12 +116,13 @@ public class TweetResource {
         
         return Response.ok(newTweetDTO).build();
     }
+
     @PUT
-    @Path("heart/{id}")
-    public TweetDTO heartTweet(KwetterUserDTO heartingUserDTO,@PathParam("id") Long id) {
+    @Path("heart/{tweetId}")
+    public TweetDTO heartTweet(KwetterUserDTO heartingUserDTO, @PathParam("tweetId") Long tweetId) {
         
         KwetterUser heartingUser = kwetterUserService.findUser(heartingUserDTO.getId());
-        Tweet tweetToHeart = tweetService.findTweet(id);
+        Tweet tweetToHeart = tweetService.findTweet(tweetId);
         tweetToHeart.heartTweet(heartingUser);
         tweetService.updateTweet(tweetToHeart);
         return new TweetDTOMapper().mapTweets(tweetToHeart);
