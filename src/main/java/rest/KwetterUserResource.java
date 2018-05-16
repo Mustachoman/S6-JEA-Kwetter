@@ -161,13 +161,7 @@ public class KwetterUserResource {
         List<KwetterUserDTO> foundUserFollowersDTO = new ArrayList<>();
         foundUserFollowers.forEach(user -> {
             KwetterUserDTO userDTO = new KwetterUserDTOMapper().mapKwetterUser(user);
-
-            String uri = uriInfo.getBaseUriBuilder()
-                    .path(KwetterUserResource.class)
-                    .path(user.getId().toString()).toString();
-
-            userDTO.setUri(uri);
-            foundUserFollowersDTO.add(userDTO);
+            foundUserFollowersDTO.add(this.setDTOUris(uriInfo, userDTO));
         });
         return foundUserFollowersDTO;
     }

@@ -66,7 +66,7 @@ public class TweetResource {
     
     
     @GET
-    @Path("user/{userId}")
+    @Path("allTweets/{userId}")
     public List<TweetDTO> allTweetsFromUser(@PathParam("userId") Long userId) {
         List<Tweet> tweets = tweetService.allTweets();
         List<TweetDTO> tweetDTO = new ArrayList<>();
